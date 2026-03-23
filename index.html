@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kasthe.dev</title>
+  <meta name="description" content="kas — swe, 20+ years. building tools that bridge the gap between human and llm.">
+  <meta property="og:title" content="kasthe.dev">
+  <meta property="og:description" content="kas — swe, 20+ years. building tools that bridge the gap between human and llm.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kasthe.dev">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #7D56F4;
+      --purple-dim: #6B47D9;
+      --hot-pink: #F25D94;
+      --green: #73F59F;
+      --light-blue: #82CFFF;
+      --yellow: #EDFF82;
+      --orange: #FF9F43;
+      --cream: #FFFDF5;
+      --bg: #1A1A2E;
+      --bg-panel: #16162A;
+      --bg-deep: #0F0F1F;
+      --dark-gray: #383838;
+      --mid-gray: #5C5C5C;
+      --light-gray: #9B9B9B;
+      --faint: #4A4A6A;
+      --border: #2D2D4A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    ::selection { background: #7D56F460; color: var(--cream); }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 30%, var(--bg-panel) 100%);
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 14px;
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* scanlines */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 3px);
+      opacity: 0.4;
+    }
+
+    a { color: var(--light-blue); text-decoration: none; transition: color 0.15s; }
+    a:hover { color: var(--hot-pink); text-decoration: underline; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+
+    /* ── tui box ── */
+    .tui-box { margin-bottom: 16px; }
+    .tui-box .border-top,
+    .tui-box .border-bottom {
+      color: var(--border);
+      line-height: 1.2;
+      user-select: none;
+      display: flex;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .tui-box.focused .border-top,
+    .tui-box.focused .border-bottom { color: var(--purple); }
+    .tui-box .border-fill { flex: 1; overflow: hidden; }
+    .tui-box .box-title { font-weight: 700; }
+    .tui-box .border-mid {
+      display: flex;
+    }
+    .tui-box .border-mid .side {
+      user-select: none;
+      line-height: 1.65;
+    }
+    .tui-box .border-mid .side { color: var(--border); }
+    .tui-box.focused .border-mid .side { color: var(--purple); }
+    .tui-box .box-content {
+      flex: 1;
+      padding: 8px 14px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* accent overrides */
+    .accent-purple .box-title { color: var(--purple); }
+    .accent-pink .box-title { color: var(--hot-pink); }
+    .accent-green .box-title { color: var(--green); }
+    .accent-blue .box-title { color: var(--light-blue); }
+    .accent-default .box-title { color: var(--hot-pink); }
+
+    /* ── logo ── */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      padding: 8px 0 20px;
+      border-bottom: 1px solid #38383840;
+      margin-bottom: 24px;
+      animation: fadeIn 0.6s ease;
+    }
+    .logo .bubble { color: var(--faint); margin-right: 4px; }
+
+    /* ── prompt ── */
+    .prompt .user { color: var(--green); }
+    .prompt .at { color: var(--mid-gray); }
+    .prompt .host { color: var(--light-blue); }
+    .prompt .colon { color: var(--mid-gray); }
+    .prompt .tilde { color: var(--purple); }
+    .prompt .dollar { color: var(--cream); }
+    .prompt { color: var(--faint); }
+
+    /* ── badges ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+      color: var(--cream);
+    }
+
+    /* ── status dot ── */
+    .status-dot { font-size: 0.85rem; }
+    .status-dot .label { color: var(--light-gray); }
+
+    /* ── grid ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .grid-3 .project-card {
+      min-width: 0;
+    }
+    .grid-3 .project-card .tui-box {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .grid-3 .project-card .border-mid { flex: 1; }
+    .grid-3 .project-card .border-top,
+    .grid-3 .project-card .border-bottom { min-width: 0; }
+    .grid-3 .project-card .box-content { word-break: break-word; }
+
+    /* ── project card hover ── */
+    .project-card { transition: transform 0.2s ease; display: block; text-decoration: none !important; }
+    .project-card:hover { transform: translateY(-2px); }
+    .project-card:hover .border-top,
+    .project-card:hover .border-bottom { color: var(--purple) !important; }
+    .project-card:hover .border-mid .side { color: var(--purple) !important; }
+
+    .tech-tag {
+      color: var(--faint);
+      font-size: 0.75rem;
+      border: 1px solid var(--dark-gray);
+      padding: 1px 6px;
+      display: inline-block;
+    }
+
+    /* ── blog entry ── */
+    .blog-entry {
+      padding: 12px 0;
+      border-bottom: 1px solid #2D2D4A20;
+      cursor: default;
+    }
+    .blog-entry .title { color: var(--cream); font-weight: 700; font-size: 0.95rem; transition: color 0.15s; }
+    .blog-entry:hover .title { color: var(--hot-pink); }
+    .blog-entry:hover .arrow { opacity: 1; }
+    .blog-entry .arrow { opacity: 0; transition: opacity 0.15s; }
+    .blog-entry .date { color: var(--faint); font-size: 0.75rem; }
+    .blog-entry .excerpt { color: var(--light-gray); font-size: 0.8rem; line-height: 1.5; padding-left: 1.2em; margin-top: 4px; }
+    .blog-entry .tags { display: flex; gap: 6px; padding-left: 1.2em; margin-top: 6px; }
+    .blog-entry .tag { color: var(--purple); font-size: 0.72rem; }
+
+    /* ── section header ── */
+    .section-header {
+      color: var(--hot-pink);
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      margin-top: 24px;
+    }
+
+    /* ── table ── */
+    .repo-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .repo-table th { text-align: left; padding: 6px 10px; font-weight: 700; color: var(--hot-pink); border-bottom: 1px solid var(--dark-gray); }
+    .repo-table th:first-child { padding-left: 0; }
+    .repo-table td { padding: 8px 10px; }
+    .repo-table td:first-child { padding-left: 0; }
+    .repo-table tr { border-bottom: 1px solid #2D2D4A20; }
+    .repo-table .stack { color: var(--purple); }
+    .repo-table .desc { color: var(--light-gray); }
+    .repo-table a { color: var(--cream); font-weight: 500; }
+
+    /* ── contact grid ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .link-row { display: flex; align-items: center; gap: 8px; }
+    .link-row .diamond-green { color: var(--green); }
+    .link-row .diamond-blue { color: var(--light-blue); }
+
+    /* ── footer ── */
+    .footer {
+      margin-top: 32px;
+      padding: 8px 0;
+      border-top: 1px solid #38383840;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.75rem;
+    }
+    .footer .meta { display: flex; gap: 16px; }
+    .footer .credit { font-size: 0.72rem; color: var(--mid-gray); }
+
+    /* ── glow on about ── */
+    .glow { animation: glowPulse 4s ease infinite; }
+
+    /* ── animations ── */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px #7D56F415; } 50% { box-shadow: 0 0 40px #7D56F425; } }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .fade-up { animation: fadeUp 0.4s ease both; }
+    .fade-up-1 { animation: fadeUp 0.4s ease 0.1s both; }
+    .fade-up-2 { animation: fadeUp 0.4s ease 0.2s both; }
+    .fade-up-3 { animation: fadeUp 0.4s ease 0.3s both; }
+    .fade-up-4 { animation: fadeUp 0.4s ease 0.4s both; }
+    .fade-up-5 { animation: fadeUp 0.4s ease 0.5s both; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- logo -->
+    <div class="logo">
+      <span class="bubble">🫧</span><span style="color:#F25D94">k</span><span style="color:#D456C4">a</span><span style="color:#B056F4">s</span><span style="color:#5C5C5C">.</span><span style="color:#9B56F4">t</span><span style="color:#8F96CA">h</span><span style="color:#82CFFF">e</span><span style="color:#82CFFF">.</span><span style="color:#7BDACC">d</span><span style="color:#79E5AA">e</span><span style="color:#73F59F">v</span>
+    </div>
+
+    <!-- ~/about -->
+    <div class="tui-box focused accent-purple glow fade-up">
+      <div class="border-top">
+        <span>╭</span><span>─ </span><span class="box-title">~/about</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+      </div>
+      <div class="border-mid">
+        <span class="side">│</span>
+        <div class="box-content">
+          <div style="margin-bottom: 12px;">
+            <span class="prompt"><span class="user">kas</span><span class="at">@</span><span class="host">kasthe.co</span><span class="colon">:</span><span class="tilde">~</span><span class="dollar">$ </span></span><span>whoami</span>
+          </div>
+          <div class="fade-up-2">
+            <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3;">
+              kas <span style="color: var(--faint); font-weight: 400;">—</span> <span style="color: var(--light-gray); font-weight: 400; font-size: 1rem;">swe, 20+ years</span>
+            </div>
+            <div style="color: var(--light-gray); line-height: 1.6; font-size: 0.88rem; max-width: 640px;">
+              building tools that bridge the gap between human and llm. tuis, distributed dictation, and ai-assisted development workflows -- exploring what this new era of software engineering actually looks like in practice.
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+              <span class="badge" style="background: var(--light-blue);">python</span>
+              <span class="badge" style="background: #82CFFFAA;">react-native</span>
+              <span class="badge" style="background: var(--purple);">go</span>
+              <span class="badge" style="background: var(--purple-dim);">rust</span>
+              <span class="badge" style="background: var(--hot-pink);">ai/llm</span>
+              <span class="badge" style="background: #73F59FCC;">tui</span>
+              <span class="badge" style="background: var(--dark-gray);">linux</span>
+            </div>
+          </div>
+        </div>
+        <span class="side">│</span>
+      </div>
+      <div class="border-bottom">
+        <span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╯</span>
+      </div>
+    </div>
+
+    <!-- status + github row -->
+    <div class="grid-2 fade-up-1">
+      <div class="tui-box">
+        <div class="border-top">
+          <span>╭</span><span>─ </span><span class="box-title" style="color: var(--hot-pink);">status</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span>
+        </div>
+        <div class="border-mid">
+          <span class="side">│</span>
+          <div class="box-content">
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <span class="status-dot" style="color: var(--green);">● <span class="label">building kasmos</span></span>
+              <span class="status-dot" style="color: var(--yellow);">● <span class="label">tuning kaspr</span></span>
+            </div>
+          </div>
+          <span class="side">│</span>
+        </div>
+        <div class="border-bottom">
+          <span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╯</span>
+        </div>
+      </div>
+
+      <div class="tui-box">
+        <div class="border-top">
+          <span>╭</span><span>─ </span><span class="box-title" style="color: var(--hot-pink);">github</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span>
+        </div>
+        <div class="border-mid">
+          <span class="side">│</span>
+          <div class="box-content">
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <a href="https://github.com/kastheco" target="_blank" rel="noopener noreferrer" class="link-row">
+                <span class="diamond-green">◆</span>
+                <span style="color: var(--cream);">kastheco</span>
+              </a>
+            </div>
+          </div>
+          <span class="side">│</span>
+        </div>
+        <div class="border-bottom">
+          <span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╯</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- featured projects -->
+    <div class="section-header fade-up-2">── featured projects ──</div>
+    <div class="grid-3 fade-up-2">
+
+      <a href="https://github.com/kastheco/kasmos" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="tui-box">
+          <div class="border-top"><span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span></div>
+          <div class="border-mid">
+            <span class="side">│</span>
+            <div class="box-content">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                <span style="color: var(--hot-pink); font-weight: 700; font-size: 1rem;">kasmos</span>
+                <span class="status-dot" style="color: var(--green);">● <span class="label">active</span></span>
+              </div>
+              <div style="color: var(--light-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
+                ai-powered tui orchestration tool built with charm/bubbletea. multi-agent task management for the terminal.
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="tech-tag">go</span>
+                <span class="tech-tag">bubbletea</span>
+                <span class="tech-tag">lipgloss</span>
+                <span class="tech-tag">claude api</span>
+              </div>
+            </div>
+            <span class="side">│</span>
+          </div>
+          <div class="border-bottom"><span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╯</span></div>
+        </div>
+      </a>
+
+      <a href="https://github.com/kastheco/kaspr" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="tui-box">
+          <div class="border-top"><span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span></div>
+          <div class="border-mid">
+            <span class="side">│</span>
+            <div class="box-content">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                <span style="color: var(--hot-pink); font-weight: 700; font-size: 1rem;">kaspr</span>
+                <span class="status-dot" style="color: var(--green);">● <span class="label">active</span></span>
+              </div>
+              <div style="color: var(--light-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
+                native linux speech-to-text dictation based on hyprwhspr. fast, accurate, private system-wide voice input.
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="tech-tag">python</span>
+                <span class="tech-tag">whisper</span>
+                <span class="tech-tag">wayland</span>
+              </div>
+            </div>
+            <span class="side">│</span>
+          </div>
+          <div class="border-bottom"><span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╯</span></div>
+        </div>
+      </a>
+
+      <a href="https://github.com/kastheco/hyprscreens" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="tui-box">
+          <div class="border-top"><span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span></div>
+          <div class="border-mid">
+            <span class="side">│</span>
+            <div class="box-content">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                <span style="color: var(--hot-pink); font-weight: 700; font-size: 1rem;">hyprscreens</span>
+                <span class="status-dot" style="color: var(--green);">● <span class="label">active</span></span>
+              </div>
+              <div style="color: var(--light-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
+                hyprland display and screen management utility for multi-monitor wayland setups.
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <span class="tech-tag">python</span>
+                <span class="tech-tag">hyprland</span>
+                <span class="tech-tag">wayland</span>
+              </div>
+            </div>
+            <span class="side">│</span>
+          </div>
+          <div class="border-bottom"><span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╯</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+      <div class="meta">
+        <span style="color: var(--faint);"><span style="color: var(--purple);">▪</span> kasthe.dev</span>
+        <span style="color: var(--faint);"><span style="color: var(--green);">▪</span> hugo + cloudflare</span>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
