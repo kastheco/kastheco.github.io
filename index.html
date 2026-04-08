@@ -15,41 +15,36 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --purple: #7D56F4;
-      --purple-dim: #6B47D9;
-      --hot-pink: #F25D94;
-      --green: #73F59F;
-      --light-blue: #82CFFF;
-      --yellow: #EDFF82;
-      --orange: #FF9F43;
-      --cream: #FFFDF5;
-      --bg: #1A1A2E;
-      --bg-panel: #16162A;
-      --bg-deep: #0F0F1F;
-      --dark-gray: #383838;
-      --mid-gray: #5C5C5C;
-      --light-gray: #9B9B9B;
-      --faint: #4A4A6A;
-      --border: #2D2D4A;
-      --accent-foam: #9ccfd8;
-      --accent-iris: #c4a7e7;
-      --accent-gold: #f6c177;
-      --accent-rose: #ea9a97;
-      --accent-pine: #3e8fb0;
+      /* rosé pine moon */
+      --base: #232136;
+      --surface: #2a273f;
+      --overlay: #393552;
+      --muted: #6e6a86;
+      --subtle: #908caa;
+      --text: #e0def4;
+      --love: #eb6f92;
+      --gold: #f6c177;
+      --rose: #ea9a97;
+      --pine: #3e8fb0;
+      --foam: #9ccfd8;
+      --iris: #c4a7e7;
+      --highlight-low: rgba(224, 222, 244, 0.03);
+      --highlight-med: rgba(224, 222, 244, 0.06);
+      --highlight-high: rgba(224, 222, 244, 0.10);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    ::selection { background: #7D56F460; color: var(--cream); }
+    ::selection { background: rgba(196, 167, 231, 0.3); color: var(--text); }
 
     html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 30%, var(--bg-panel) 100%);
+      background: var(--base);
       font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
       font-size: 14px;
-      color: var(--cream);
+      color: var(--text);
       overflow-x: hidden;
     }
 
@@ -60,12 +55,12 @@
       top: 0; left: 0; right: 0; bottom: 0;
       pointer-events: none;
       z-index: 9999;
-      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 3px);
-      opacity: 0.4;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 3px);
+      opacity: 0.3;
     }
 
-    a { color: var(--light-blue); text-decoration: none; transition: color 0.15s; }
-    a:hover { color: var(--hot-pink); text-decoration: underline; }
+    a { color: var(--foam); text-decoration: none; transition: color 0.15s; }
+    a:hover { color: var(--iris); text-decoration: underline; }
 
     .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
 
@@ -73,7 +68,7 @@
     .tui-box { margin-bottom: 16px; }
     .tui-box .border-top,
     .tui-box .border-bottom {
-      color: var(--border);
+      color: var(--overlay);
       line-height: 1.2;
       user-select: none;
       display: flex;
@@ -81,7 +76,7 @@
       overflow: hidden;
     }
     .tui-box.focused .border-top,
-    .tui-box.focused .border-bottom { color: var(--purple); }
+    .tui-box.focused .border-bottom { color: var(--iris); }
     .tui-box .border-fill { flex: 1; overflow: hidden; }
     .tui-box .box-title { font-weight: 700; }
     .tui-box .border-mid {
@@ -91,8 +86,8 @@
       user-select: none;
       line-height: 1.65;
     }
-    .tui-box .border-mid .side { color: var(--border); }
-    .tui-box.focused .border-mid .side { color: var(--purple); }
+    .tui-box .border-mid .side { color: var(--overlay); }
+    .tui-box.focused .border-mid .side { color: var(--iris); }
     .tui-box .box-content {
       flex: 1;
       padding: 8px 14px;
@@ -101,11 +96,11 @@
     }
 
     /* accent overrides */
-    .accent-purple .box-title { color: var(--purple); }
-    .accent-pink .box-title { color: var(--hot-pink); }
-    .accent-green .box-title { color: var(--green); }
-    .accent-blue .box-title { color: var(--light-blue); }
-    .accent-default .box-title { color: var(--hot-pink); }
+    .accent-purple .box-title { color: var(--iris); }
+    .accent-pink .box-title { color: var(--rose); }
+    .accent-green .box-title { color: var(--foam); }
+    .accent-blue .box-title { color: var(--foam); }
+    .accent-default .box-title { color: var(--rose); }
 
     /* ── logo ── */
     .logo {
@@ -113,10 +108,10 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       padding: 8px 0 20px;
-      border-bottom: 1px solid #38383840;
+      border-bottom: 1px solid var(--highlight-med);
       margin-bottom: 24px;
       animation: fadeIn 0.6s ease;
-      background: linear-gradient(135deg, var(--accent-rose), var(--accent-iris));
+      background: linear-gradient(135deg, var(--rose), var(--iris));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -124,13 +119,13 @@
     }
     
     /* ── prompt ── */
-    .prompt .user { color: var(--green); }
-    .prompt .at { color: var(--mid-gray); }
-    .prompt .host { color: var(--light-blue); }
-    .prompt .colon { color: var(--mid-gray); }
-    .prompt .tilde { color: var(--purple); }
-    .prompt .dollar { color: var(--cream); }
-    .prompt { color: var(--faint); }
+    .prompt .user { color: var(--foam); }
+    .prompt .at { color: var(--muted); }
+    .prompt .host { color: var(--iris); }
+    .prompt .colon { color: var(--muted); }
+    .prompt .tilde { color: var(--iris); }
+    .prompt .dollar { color: var(--text); }
+    .prompt { color: var(--muted); }
 
     /* ── badges ── */
     .badge {
@@ -139,12 +134,12 @@
       font-weight: 700;
       font-size: 0.75rem;
       letter-spacing: 0.03em;
-      color: var(--cream);
+      color: var(--base);
     }
 
     /* ── status dot ── */
     .status-dot { font-size: 0.85rem; }
-    .status-dot .label { color: var(--light-gray); }
+    .status-dot .label { color: var(--subtle); }
 
     /* ── grid ── */
     .grid-2 {
@@ -176,13 +171,13 @@
     .project-card { transition: transform 0.2s ease; display: block; text-decoration: none !important; }
     .project-card:hover { transform: translateY(-2px); }
     .project-card:hover .border-top,
-    .project-card:hover .border-bottom { color: var(--purple) !important; }
-    .project-card:hover .border-mid .side { color: var(--purple) !important; }
+    .project-card:hover .border-bottom { color: rgba(196, 167, 231, 0.30) !important; }
+    .project-card:hover .border-mid .side { color: rgba(196, 167, 231, 0.30) !important; }
 
     .tech-tag {
-      color: var(--faint);
+      color: var(--subtle);
       font-size: 0.75rem;
-      border: 1px solid var(--dark-gray);
+      border: 1px solid var(--overlay);
       padding: 1px 6px;
       display: inline-block;
     }
@@ -190,21 +185,21 @@
     /* ── blog entry ── */
     .blog-entry {
       padding: 12px 0;
-      border-bottom: 1px solid #2D2D4A20;
+      border-bottom: 1px solid var(--highlight-med);
       cursor: default;
     }
-    .blog-entry .title { color: var(--cream); font-weight: 700; font-size: 0.95rem; transition: color 0.15s; }
-    .blog-entry:hover .title { color: var(--hot-pink); }
+    .blog-entry .title { color: var(--text); font-weight: 700; font-size: 0.95rem; transition: color 0.15s; }
+    .blog-entry:hover .title { color: var(--rose); }
     .blog-entry:hover .arrow { opacity: 1; }
     .blog-entry .arrow { opacity: 0; transition: opacity 0.15s; }
-    .blog-entry .date { color: var(--faint); font-size: 0.75rem; }
-    .blog-entry .excerpt { color: var(--light-gray); font-size: 0.8rem; line-height: 1.5; padding-left: 1.2em; margin-top: 4px; }
+    .blog-entry .date { color: var(--muted); font-size: 0.75rem; }
+    .blog-entry .excerpt { color: var(--subtle); font-size: 0.8rem; line-height: 1.5; padding-left: 1.2em; margin-top: 4px; }
     .blog-entry .tags { display: flex; gap: 6px; padding-left: 1.2em; margin-top: 6px; }
-    .blog-entry .tag { color: var(--purple); font-size: 0.72rem; }
+    .blog-entry .tag { color: var(--iris); font-size: 0.72rem; }
 
     /* ── section header ── */
     .section-header {
-      color: var(--hot-pink);
+      color: var(--rose);
       font-weight: 700;
       margin-bottom: 10px;
       font-size: 0.85rem;
@@ -214,14 +209,14 @@
 
     /* ── table ── */
     .repo-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    .repo-table th { text-align: left; padding: 6px 10px; font-weight: 700; color: var(--hot-pink); border-bottom: 1px solid var(--dark-gray); }
+    .repo-table th { text-align: left; padding: 6px 10px; font-weight: 700; color: var(--rose); border-bottom: 1px solid var(--overlay); }
     .repo-table th:first-child { padding-left: 0; }
     .repo-table td { padding: 8px 10px; }
     .repo-table td:first-child { padding-left: 0; }
-    .repo-table tr { border-bottom: 1px solid #2D2D4A20; }
-    .repo-table .stack { color: var(--purple); }
-    .repo-table .desc { color: var(--light-gray); }
-    .repo-table a { color: var(--cream); font-weight: 500; }
+    .repo-table tr { border-bottom: 1px solid var(--highlight-med); }
+    .repo-table .stack { color: var(--iris); }
+    .repo-table .desc { color: var(--subtle); }
+    .repo-table a { color: var(--text); font-weight: 500; }
 
     /* ── contact grid ── */
     .contact-grid {
@@ -231,14 +226,14 @@
     }
 
     .link-row { display: flex; align-items: center; gap: 8px; }
-    .link-row .diamond-green { color: var(--green); }
-    .link-row .diamond-blue { color: var(--light-blue); }
+    .link-row .diamond-green { color: var(--foam); }
+    .link-row .diamond-blue { color: var(--pine); }
 
     /* ── footer ── */
     .footer {
       margin-top: 32px;
       padding: 8px 0;
-      border-top: 1px solid #38383840;
+      border-top: 1px solid var(--highlight-med);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -247,7 +242,7 @@
       font-size: 0.75rem;
     }
     .footer .meta { display: flex; gap: 16px; }
-    .footer .credit { font-size: 0.72rem; color: var(--mid-gray); }
+    .footer .credit { font-size: 0.72rem; color: var(--muted); }
 
     /* ── glow on about ── */
     .glow { animation: glowPulse 4s ease infinite; }
@@ -255,7 +250,7 @@
     /* ── animations ── */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px #7D56F415; } 50% { box-shadow: 0 0 40px #7D56F425; } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px rgba(196, 167, 231, 0.08); } 50% { box-shadow: 0 0 40px rgba(196, 167, 231, 0.15); } }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
     .fade-up { animation: fadeUp 0.4s ease both; }
@@ -288,19 +283,19 @@
           </div>
           <div class="fade-up-2">
             <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3;">
-              kas <span style="color: var(--faint); font-weight: 400;">—</span> <span style="color: var(--light-gray); font-weight: 400; font-size: 1rem;">swe, 20+ years</span>
+              kas <span style="color: var(--muted); font-weight: 400;">—</span> <span style="color: var(--subtle); font-weight: 400; font-size: 1rem;">swe, 20+ years</span>
             </div>
-            <div style="color: var(--light-gray); line-height: 1.6; font-size: 0.88rem; max-width: 640px;">
+            <div style="color: var(--subtle); line-height: 1.6; font-size: 0.88rem; max-width: 640px;">
               building tools that bridge the gap between human and llm. tuis, distributed dictation, and ai-assisted development workflows -- exploring what this new era of software engineering actually looks like in practice.
             </div>
             <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
-              <span class="badge" style="background: var(--light-blue);">python</span>
-              <span class="badge" style="background: #82CFFFAA;">react-native</span>
-              <span class="badge" style="background: var(--purple);">go</span>
-              <span class="badge" style="background: var(--purple-dim);">rust</span>
-              <span class="badge" style="background: var(--hot-pink);">ai/llm</span>
-              <span class="badge" style="background: #73F59FCC;">tui</span>
-              <span class="badge" style="background: var(--dark-gray);">linux</span>
+              <span class="badge" style="background: var(--foam);">python</span>
+              <span class="badge" style="background: var(--pine);">react-native</span>
+              <span class="badge" style="background: var(--iris);">go</span>
+              <span class="badge" style="background: var(--rose);">rust</span>
+              <span class="badge" style="background: var(--love);">ai/llm</span>
+              <span class="badge" style="background: var(--gold);">tui</span>
+              <span class="badge" style="background: var(--overlay); color: var(--subtle);">linux</span>
             </div>
           </div>
         </div>
@@ -315,15 +310,15 @@
     <div class="grid-2 fade-up-1">
       <div class="tui-box">
         <div class="border-top">
-          <span>╭</span><span>─ </span><span class="box-title" style="color: var(--hot-pink);">status</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span>
+          <span>╭</span><span>─ </span><span class="box-title" style="color: var(--rose);">status</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span>
         </div>
         <div class="border-mid">
           <span class="side">│</span>
           <div class="box-content">
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <span class="status-dot" style="color: var(--green);">● <span class="label">building freyja iq</span></span>
-              <span class="status-dot" style="color: var(--green);">● <span class="label">building kasmos</span></span>
-              <span class="status-dot" style="color: var(--yellow);">● <span class="label">tuning kaspr</span></span>
+              <span class="status-dot" style="color: var(--foam);">● <span class="label">building freyja iq</span></span>
+              <span class="status-dot" style="color: var(--foam);">● <span class="label">building kasmos</span></span>
+              <span class="status-dot" style="color: var(--gold);">● <span class="label">tuning kaspr</span></span>
             </div>
           </div>
           <span class="side">│</span>
@@ -335,7 +330,7 @@
 
       <div class="tui-box">
         <div class="border-top">
-          <span>╭</span><span>─ </span><span class="box-title" style="color: var(--hot-pink);">github</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span>
+          <span>╭</span><span>─ </span><span class="box-title" style="color: var(--rose);">github</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────</span><span>╮</span>
         </div>
         <div class="border-mid">
           <span class="side">│</span>
@@ -343,7 +338,7 @@
             <div style="display: flex; flex-direction: column; gap: 6px;">
               <a href="https://github.com/kastheco" target="_blank" rel="noopener noreferrer" class="link-row">
                 <span class="diamond-green">◆</span>
-                <span style="color: var(--cream);">kastheco</span>
+                <span style="color: var(--text);">kastheco</span>
               </a>
             </div>
           </div>
@@ -366,10 +361,10 @@
             <span class="side">│</span>
             <div class="box-content">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
-                <span style="color: var(--hot-pink); font-weight: 700; font-size: 1rem;">kasmos</span>
-                <span class="status-dot" style="color: var(--green);">● <span class="label">active</span></span>
+                <span style="color: var(--rose); font-weight: 700; font-size: 1rem;">kasmos</span>
+                <span class="status-dot" style="color: var(--foam);">● <span class="label">active</span></span>
               </div>
-              <div style="color: var(--light-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
+              <div style="color: var(--subtle); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
                 ai-powered tui orchestration tool built with charm/bubbletea. multi-agent task management for the terminal.
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -392,10 +387,10 @@
             <span class="side">│</span>
             <div class="box-content">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
-                <span style="color: var(--hot-pink); font-weight: 700; font-size: 1rem;">kaspr</span>
-                <span class="status-dot" style="color: var(--green);">● <span class="label">active</span></span>
+                <span style="color: var(--rose); font-weight: 700; font-size: 1rem;">kaspr</span>
+                <span class="status-dot" style="color: var(--foam);">● <span class="label">active</span></span>
               </div>
-              <div style="color: var(--light-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
+              <div style="color: var(--subtle); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
                 local wakeword layer for hyprwhspr: always-on local listening, cloud providers only when live dictation starts.
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -417,10 +412,10 @@
             <span class="side">│</span>
             <div class="box-content">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
-                <span style="color: var(--hot-pink); font-weight: 700; font-size: 1rem;">hyprscreens</span>
-                <span class="status-dot" style="color: var(--green);">● <span class="label">active</span></span>
+                <span style="color: var(--rose); font-weight: 700; font-size: 1rem;">hyprscreens</span>
+                <span class="status-dot" style="color: var(--foam);">● <span class="label">active</span></span>
               </div>
-              <div style="color: var(--light-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
+              <div style="color: var(--subtle); font-size: 0.85rem; line-height: 1.5; margin-bottom: 8px;">
                 rust utility for hyprland display management, built for fast multi-monitor wayland setup switching.
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -440,8 +435,8 @@
     <!-- footer -->
     <div class="footer">
       <div class="meta">
-        <span style="color: var(--faint);"><span style="color: var(--purple);">▪</span> kasthe.dev</span>
-        <span style="color: var(--faint);"><span style="color: var(--green);">▪</span> hugo + cloudflare</span>
+        <span style="color: var(--muted);"><span style="color: var(--iris);">▪</span> kasthe.dev</span>
+        <span style="color: var(--muted);"><span style="color: var(--foam);">▪</span> hugo + cloudflare</span>
       </div>
     </div>
 
