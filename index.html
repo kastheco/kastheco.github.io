@@ -31,6 +31,11 @@
       --light-gray: #9B9B9B;
       --faint: #4A4A6A;
       --border: #2D2D4A;
+      --accent-foam: #9ccfd8;
+      --accent-iris: #c4a7e7;
+      --accent-gold: #f6c177;
+      --accent-rose: #ea9a97;
+      --accent-pine: #3e8fb0;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -104,9 +109,6 @@
 
     /* ── logo ── */
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 2px;
       font-size: 1.3rem;
       font-weight: 700;
       letter-spacing: -0.02em;
@@ -114,6 +116,11 @@
       border-bottom: 1px solid #38383840;
       margin-bottom: 24px;
       animation: fadeIn 0.6s ease;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-iris));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      width: fit-content;
     }
     
     /* ── prompt ── */
@@ -265,7 +272,7 @@
 
     <!-- logo -->
     <div class="logo">
-      <span style="color:#F25D94">k</span><span style="color:#D456C4">a</span><span style="color:#B056F4">s</span><span style="color:#5C5C5C">.</span><span style="color:#9B56F4">t</span><span style="color:#8F96CA">h</span><span style="color:#82CFFF">e</span><span style="color:#82CFFF">.</span><span style="color:#7BDACC">d</span><span style="color:#79E5AA">e</span><span style="color:#73F59F">v</span>
+      kas.the.dev
     </div>
 
     <!-- ~/about -->
