@@ -25,7 +25,7 @@ const boxClasses = [
 
 <div class={boxClasses}>
   <div class="border-top">
-    <span>╭</span><span>─ </span>{title && <span class="box-title">{title}</span>}{titleBadge && <span class="box-title-badge"> [{titleBadge}]</span>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+    <span>╭</span><span>─ </span>{title && <span class="box-title">{title}</span>}{titleBadge && <>{'  '}<span class="box-title-badge">[{titleBadge}]</span></>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
   </div>
   <div class="border-mid">
     <span class="side">│</span>

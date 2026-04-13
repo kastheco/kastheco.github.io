@@ -70,6 +70,7 @@ a:hover { color: var(--iris); text-decoration: underline; }
   font-weight: 500;
   font-size: 0.85em;
   letter-spacing: 0.02em;
+  margin-left: 6px;
 }
 
 .title-badge {
