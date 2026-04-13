@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "kasmos": {
+      "args": [
+        "mcp"
+      ],
+      "command": "/home/kas/go/bin/kas",
+      "type": "stdio"
+    }
+  }
+}
