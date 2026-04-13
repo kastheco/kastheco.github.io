@@ -1,6 +1,7 @@
 ---
 interface Props {
   title?: string;
+  titleBadge?: string;
   accent?: 'purple' | 'pink' | 'green' | 'blue' | 'default';
   focused?: boolean;
   class?: string;
@@ -8,6 +9,7 @@ interface Props {
 
 const {
   title = '',
+  titleBadge = '',
   accent = 'default',
   focused = false,
   class: className = '',
@@ -23,7 +25,7 @@ const boxClasses = [
 
 <div class={boxClasses}>
   <div class="border-top">
-    <span>╭</span><span>─ </span>{title && <span class="box-title">{title}</span>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+    <span>╭</span><span>─ </span>{title && <span class="box-title">{title}</span>}{titleBadge && <span class="box-title-badge"> [{titleBadge}]</span>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
   </div>
   <div class="border-mid">
     <span class="side">│</span>

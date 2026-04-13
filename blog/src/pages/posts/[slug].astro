@@ -39,7 +39,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     )}
 
     <article class="post-main">
-      <TuiBox title={post.data.title} accent="pink" focused>
+      <TuiBox title={post.data.title} titleBadge={post.data.titleBadge} accent="pink" focused>
         <div class="post-meta">
           <span class="date">published {formatPostDate(post.data.pubDate)}</span>
           {post.data.updated && (

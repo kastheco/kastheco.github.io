@@ -64,6 +64,20 @@ a:hover { color: var(--iris); text-decoration: underline; }
 .tui-box.focused .border-bottom { color: var(--iris); }
 .tui-box .border-fill { flex: 1; overflow: hidden; }
 .tui-box .box-title { font-weight: 700; }
+.tui-box .box-title-badge {
+  color: var(--gold);
+  font-weight: 500;
+  font-size: 0.85em;
+  letter-spacing: 0.02em;
+}
+
+.title-badge {
+  color: var(--gold);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  margin-left: 8px;
+}
 .tui-box .border-mid {
   display: flex;
 }
