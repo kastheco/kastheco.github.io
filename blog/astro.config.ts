@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { createRemarkPlugins, createRehypePlugins } from './src/lib/markdown';
 
 export default defineConfig({
   site: 'https://kasthe.dev',
@@ -6,7 +7,7 @@ export default defineConfig({
   trailingSlash: 'always',
   markdown: {
     shikiConfig: { theme: 'rose-pine-moon' },
-    remarkPlugins: [],
-    rehypePlugins: [],
+    remarkPlugins: createRemarkPlugins(),
+    rehypePlugins: createRehypePlugins(),
   },
 });

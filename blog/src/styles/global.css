@@ -289,3 +289,72 @@ a:hover { color: var(--iris); text-decoration: underline; }
 
 .prose strong { color: var(--text); font-weight: 700; }
 .prose em { color: var(--subtle); font-style: italic; }
+
+/* ── callouts ── */
+.callout {
+  border-left: 3px solid var(--overlay);
+  border-radius: 0 2px 2px 0;
+  margin: 1.25em 0;
+  padding: 0;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.callout-title {
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.callout-content {
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--subtle);
+}
+
+/* Type-specific accent colours */
+.callout.callout-note   { border-left-color: var(--foam); }
+.callout.callout-info   { border-left-color: var(--pine); }
+.callout.callout-warning { border-left-color: var(--gold); }
+.callout.callout-danger  { border-left-color: var(--love); }
+
+.callout.callout-note   .callout-title { color: var(--foam); }
+.callout.callout-info   .callout-title { color: var(--pine); }
+.callout.callout-warning .callout-title { color: var(--gold); }
+.callout.callout-danger  .callout-title { color: var(--love); }
+
+/* ── unresolved wikilinks ── */
+.wikilink-unresolved {
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+  cursor: not-allowed;
+}
+
+/* ── resolved wikilinks ── */
+.wikilink {
+  color: var(--iris);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.wikilink:hover { color: var(--foam); }
+
+/* ── article / post images ── */
+.prose figure {
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+.prose figure img {
+  margin: 0 auto;
+}
+
+.prose figure figcaption {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
