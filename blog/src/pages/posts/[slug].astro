@@ -53,11 +53,11 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
         {post.data.description && (
           <p class="post-description">{post.data.description}</p>
         )}
-
-        <div class="prose">
-          <Content />
-        </div>
       </TuiBox>
+
+      <div class="prose">
+        <Content />
+      </div>
     </article>
   </div>
 </BlogLayout>

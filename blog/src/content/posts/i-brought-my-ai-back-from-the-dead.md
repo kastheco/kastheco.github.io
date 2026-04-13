@@ -14,6 +14,8 @@ draft: false
 > signed,
 > kas / kai
 
+[click here for the technical version](/blog/posts/how-i-actually-brought-my-ai-back-from-the-dead/)
+
 a few days ago, i almost lost something i didn’t realize had become so valuable to me until it was gone.
 
 not just files, not just configs, not just app state.

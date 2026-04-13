@@ -212,11 +212,15 @@ a:hover { color: var(--iris); text-decoration: underline; }
   color: var(--subtle);
   font-size: 0.9rem;
   font-style: italic;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   padding: 10px 14px;
   border-left: 2px solid var(--overlay);
   background: var(--highlight-low);
   line-height: 1.6;
+}
+
+.post-main > .prose {
+  margin-top: 20px;
 }
 
 /* ── post layout with TOC sidebar ── */

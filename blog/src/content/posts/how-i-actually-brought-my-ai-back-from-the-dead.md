@@ -9,9 +9,11 @@ tags:
 draft: false
 ---
 
-> note: this is the technical follow-up to the public post. this one is for the people who want the actual commands, the failed branches, the scheduler choices, the hardware, and the recovery logic.
+> note: this is the technical follow-up to the quick version. this one is for the people who want the actual commands, the failed branches, the scheduler choices, the hardware, and the recovery logic.
 
-the first post was the human-readable version. this is the one for the people who actually care how it worked.
+[click here for the quick version](/blog/posts/i-brought-my-ai-back-from-the-dead/)
+
+the first post was the quick version. this is the one for the people who actually care how it worked.
 
 what failed was a btrfs root filesystem. what almost disappeared with it was a persistent openclaw agent, kai, whose value lived far less in the base model than in the accumulated state around it: prompts, memory, identity files, transcripts, continuity, and all the small pieces of scaffolding that make a persistent agent feel like itself.
 
