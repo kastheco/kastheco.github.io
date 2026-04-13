@@ -17,29 +17,47 @@ export async function getStaticPaths() {
 type Props = { post: PostEntry };
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
 <BlogLayout title={post.data.title} description={post.data.description}>
-  <div class="blog-nav">
-    <a href="/blog/">~/blog</a>
-    <span class="sep">›</span>
-    <span style="color:var(--subtle);">{post.data.title}</span>
+  <div class="post-layout">
+    {tocHeadings.length > 0 && (
+      <aside class="toc">
+        <div class="toc-title">contents</div>
+        <nav>
+          <ul>
+            {tocHeadings.map((h) => (
+              <li class={`toc-level-${h.depth}`}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    )}
+
+    <article class="post-main">
+      <TuiBox title={post.data.title} accent="pink" focused>
+        <div class="post-meta">
+          <span class="date">published {formatPostDate(post.data.pubDate)}</span>
+          {post.data.updated && (
+            <span class="read-time">· updated {formatPostDate(post.data.updated)}</span>
+          )}
+          {post.data.tags.map((tag) => (
+            <a href={`/blog/tags/${slugifyTag(tag)}/`} class="tag-chip">#{tag}</a>
+          ))}
+        </div>
+
+        {post.data.description && (
+          <p class="post-description">{post.data.description}</p>
+        )}
+
+        <div class="prose">
+          <Content />
+        </div>
+      </TuiBox>
+    </article>
   </div>
-
-  <TuiBox title={post.data.title} accent="pink" focused>
-    <div class="post-meta">
-      <span class="date">published {formatPostDate(post.data.pubDate)}</span>
-      {post.data.updated && (
-        <span class="read-time">· updated {formatPostDate(post.data.updated)}</span>
-      )}
-      {post.data.tags.map((tag) => (
-        <a href={`/blog/tags/${slugifyTag(tag)}/`} class="tag-chip">#{tag}</a>
-      ))}
-    </div>
-
-    <div class="prose">
-      <Content />
-    </div>
-  </TuiBox>
 </BlogLayout>
