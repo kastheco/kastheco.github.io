@@ -19,13 +19,15 @@ const posts = await getPublishedPosts();
     ) : (
       posts.map((post) => (
         <a href={getPostPath(post.id)} class="blog-entry" style="display:block; text-decoration:none;">
-          <div>
-            <span class="title">{post.data.title}</span>
-            {post.data.titleBadge && (
-              <span class="title-badge">[{post.data.titleBadge}]</span>
-            )}
-            <span class="arrow"> →</span>
-            <span class="date" style="margin-left:12px;">{formatPostDate(post.data.pubDate)}</span>
+          <div class="blog-entry-head">
+            <span class="title-wrap">
+              <span class="title">{post.data.title}</span>
+              {post.data.titleBadge && (
+                <span class="title-badge">[{post.data.titleBadge}]</span>
+              )}
+              <span class="arrow"> →</span>
+            </span>
+            <span class="date">{formatPostDate(post.data.pubDate)}</span>
           </div>
           {post.data.description && (
             <div class="excerpt">{post.data.description}</div>

@@ -48,6 +48,7 @@ a { color: var(--foam); text-decoration: none; transition: color 0.15s; }
 a:hover { color: var(--iris); text-decoration: underline; }
 
 .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+.container.container-wide { max-width: 1280px; }
 
 /* ── tui box ── */
 .tui-box { margin-bottom: 16px; }
@@ -152,8 +153,16 @@ a:hover { color: var(--iris); text-decoration: underline; }
 .blog-entry {
   padding: 12px 0;
   border-bottom: 1px solid var(--highlight-med);
-  cursor: default;
+  cursor: pointer;
 }
+.blog-entry .blog-entry-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.blog-entry .title-wrap { min-width: 0; }
+.blog-entry .blog-entry-head .date { flex-shrink: 0; white-space: nowrap; }
 .blog-entry .title { color: var(--text); font-weight: 700; font-size: 0.95rem; transition: color 0.15s; }
 .blog-entry:hover .title { color: var(--rose); }
 .blog-entry:hover .arrow { opacity: 1; }
@@ -330,7 +339,6 @@ a:hover { color: var(--iris); text-decoration: underline; }
   color: var(--text);
   line-height: 1.75;
   font-size: 0.9rem;
-  max-width: 72ch;
 }
 
 .prose h1,

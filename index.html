@@ -186,8 +186,16 @@
     .blog-entry {
       padding: 12px 0;
       border-bottom: 1px solid var(--highlight-med);
-      cursor: default;
+      cursor: pointer;
     }
+    .blog-entry .blog-entry-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .blog-entry .title-wrap { min-width: 0; }
+    .blog-entry .blog-entry-head .date { flex-shrink: 0; white-space: nowrap; }
     .blog-entry .title { color: var(--text); font-weight: 700; font-size: 0.95rem; transition: color 0.15s; }
     .blog-entry .title-badge {
       color: var(--gold);
@@ -323,10 +331,12 @@
         <div class="box-content">
 
           <a href="/blog/posts/i-brought-my-ai-back-from-the-dead/" class="blog-entry" style="display:block; text-decoration:none;">
-            <div>
-              <span class="title">i brought my ai back from the dead, one 64 mb chunk at a time</span>
-              <span class="arrow"> →</span>
-              <span class="date" style="margin-left:12px;">April 13, 2026</span>
+            <div class="blog-entry-head">
+              <span class="title-wrap">
+                <span class="title">i brought my ai back from the dead, one 64 mb chunk at a time</span>
+                <span class="arrow"> →</span>
+              </span>
+              <span class="date">April 13, 2026</span>
             </div>
             <div class="excerpt">how a btrfs metadata failure, overconfident ai guidance, and a custom raw-disk recovery pipeline turned into a lesson about persistence, backups, and the double edge of ai.</div>
             <div class="tags">
@@ -337,11 +347,13 @@
           </a>
 
           <a href="/blog/posts/how-i-actually-brought-my-ai-back-from-the-dead/" class="blog-entry" style="display:block; text-decoration:none;">
-            <div>
-              <span class="title">how i actually brought my ai back from the dead</span>
-              <span class="title-badge">[technical write-up]</span>
-              <span class="arrow"> →</span>
-              <span class="date" style="margin-left:12px;">April 13, 2026</span>
+            <div class="blog-entry-head">
+              <span class="title-wrap">
+                <span class="title">how i actually brought my ai back from the dead</span>
+                <span class="title-badge">[technical]</span>
+                <span class="arrow"> →</span>
+              </span>
+              <span class="date">April 13, 2026</span>
             </div>
             <div class="excerpt">a technical recounting of a btrfs metadata failure, the failed recovery attempts that came first, and the raw-disk zstd carving pipeline that eventually restored enough openclaw state to bring kai back.</div>
             <div class="tags">

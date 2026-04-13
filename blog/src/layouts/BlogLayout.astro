@@ -5,9 +5,10 @@ import TuiBox from '../components/TuiBox.astro';
 interface Props {
   title: string;
   description?: string;
+  wide?: boolean;
 }
 
-const { title, description = '' } = Astro.props;
+const { title, description = '', wide = false } = Astro.props;
 
 const pageTitle = `${title} | kas.the.dev/blog`;
 ---
@@ -33,7 +34,7 @@ const pageTitle = `${title} | kas.the.dev/blog`;
   <link rel="alternate" type="application/rss+xml" title="kas.the.dev blog" href="/blog/rss.xml" />
 </head>
 <body>
-  <div class="container">
+  <div class={`container${wide ? ' container-wide' : ''}`}>
 
     <!-- header -->
     <div class="site-header">

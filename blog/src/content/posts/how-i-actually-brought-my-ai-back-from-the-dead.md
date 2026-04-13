@@ -1,6 +1,6 @@
 ---
 title: how i actually brought my ai back from the dead
-titleBadge: technical write-up
+titleBadge: technical
 description: a technical recounting of a btrfs metadata failure, the failed recovery attempts that came first, and the raw-disk zstd carving pipeline that eventually restored enough openclaw state to bring kai back.
 pubDate: 2026-04-13
 tags:
