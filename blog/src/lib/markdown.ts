@@ -256,9 +256,8 @@ function remarkObsidianCallouts() {
       // Match `[!type]` at the start of the first line, optionally followed
       // by a title.  The `s` flag is NOT needed — `[!type]` must be on the
       // first line.
-      const match = (firstText.value as string).match(
-        /^\[!(\w+)\][ \t]*(.*)/,
-      );
+      const rawFirstTextValue = firstText.value as string;
+      const match = rawFirstTextValue.match(/^\[!(\w+)\][ \t]*(.*)/);
       if (!match) return;
 
       const rawType = match[1]!.toLowerCase();
@@ -274,12 +273,47 @@ function remarkObsidianCallouts() {
         'data-callout': calloutType,
       };
 
-      // --- title div -------------------------------------------------------
-      // Replace the `[!type] Title` text node with just the title.
+      // --- split title and body out of the first paragraph ----------------
+      // Obsidian packs `[!type]` and body content into a single remark
+      // paragraph when lines are not separated by a blank `>` line.  The
+      // title lives on the first line of the first text node; everything
+      // after the first `\n` — plus any inline siblings of that text node
+      // (inline code, emphasis, etc.) — belongs to the body.
+      const firstNewlineIdx = rawFirstTextValue.indexOf('\n');
+      const bodyTextFromFirstNode =
+        firstNewlineIdx !== -1
+          ? rawFirstTextValue.slice(firstNewlineIdx + 1)
+          : '';
+      const inlineSiblings = firstChild.children.slice(1);
+
+      // Title paragraph now contains only the bare title text node.
       firstText.value = titleText;
+      firstChild.children = [firstText];
       firstChild.data = firstChild.data ?? {};
       firstChild.data.hName = 'div';
       firstChild.data.hProperties = { className: 'callout-title' };
+
+      // Build a new body paragraph from the leftover first-line body text
+      // and any former inline siblings.  Insert it immediately after the
+      // title paragraph so the existing `slice(1)` content-div logic picks
+      // it up alongside any subsequent blockquote paragraphs.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const bodyParagraphChildren: any[] = [];
+      if (bodyTextFromFirstNode.length > 0) {
+        bodyParagraphChildren.push({
+          type: 'text',
+          value: bodyTextFromFirstNode,
+        });
+      }
+      bodyParagraphChildren.push(...inlineSiblings);
+
+      if (bodyParagraphChildren.length > 0) {
+        node.children = [
+          firstChild,
+          { type: 'paragraph', children: bodyParagraphChildren },
+          ...node.children.slice(1),
+        ];
+      }
 
       // --- content div (remaining blockquote children) ---------------------
       if (node.children.length > 1) {
