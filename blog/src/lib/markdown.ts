@@ -103,6 +103,7 @@ function remarkObsidianImageEmbed() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const next: any | undefined = node.children[i + 1];
 
+        // Case A: remark-wiki-link split ![[...]] into text("!") + wikiLink node.
         const isImageEmbed =
           child.type === 'text' &&
           (child.value as string).endsWith('!') &&
@@ -133,6 +134,50 @@ function remarkObsidianImageEmbed() {
           });
 
           i += 2; // skip `!` text node AND the wikiLink node
+          continue;
+        }
+
+        // Case B: the parser left ![[filename.ext]] as a single text node
+        // (the leading ! can prevent micromark from recognising [[ as a
+        // wiki-link opener, so no wikiLink node is created).
+        const IMAGE_EMBED_RE = /!\[\[([^\]]+\.(png|jpe?g|gif|svg|webp|avif))\]\]/gi;
+        if (child.type === 'text' && IMAGE_EMBED_RE.test(child.value as string)) {
+          IMAGE_EMBED_RE.lastIndex = 0; // reset after .test()
+          const rawText: string = child.value as string;
+          let cursor = 0;
+          let m: RegExpExecArray | null;
+
+          while ((m = IMAGE_EMBED_RE.exec(rawText)) !== null) {
+            if (m.index > cursor) {
+              newChildren.push({ ...child, value: rawText.slice(cursor, m.index) });
+            }
+
+            const filename = basename(m[1]);
+            const diskPath = join(PUBLIC_IMAGES_DIR, postId, filename);
+
+            if (!existsSync(diskPath)) {
+              throw new Error(
+                `[markdown] Missing image embed in post "${postId}": ` +
+                  `"${filename}" not found at ` +
+                  `public/images/posts/${postId}/${filename}`,
+              );
+            }
+
+            newChildren.push({
+              type: 'image',
+              url: `/blog/images/posts/${postId}/${filename}`,
+              alt: filename,
+              title: null,
+            });
+
+            cursor = m.index + m[0].length;
+          }
+
+          if (cursor < rawText.length) {
+            newChildren.push({ ...child, value: rawText.slice(cursor) });
+          }
+
+          i++;
           continue;
         }
 

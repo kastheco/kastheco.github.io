@@ -1,0 +1,55 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import TuiBox from '../../components/TuiBox.astro';
+import { getPublishedPosts, getPostPath, formatPostDate } from '../../lib/posts';
+import { getTagSummaries, getPostsForTag } from '../../lib/tags';
+import type { PostEntry } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts({ includeDrafts: false });
+  const tags = getTagSummaries(posts);
+  return tags.map(({ slug, label }) => {
+    const tagPosts = getPostsForTag(posts, slug);
+    return {
+      params: { tag: slug },
+      props: { tag: label, posts: tagPosts },
+    };
+  });
+}
+
+type Props = { tag: string; posts: PostEntry[] };
+
+const { tag, posts } = Astro.props;
+---
+
+<BlogLayout title={`#${tag}`} description={`Posts tagged with ${tag}.`}>
+  <div class="blog-nav">
+    <a href="/blog/">~/blog</a>
+    <span class="sep">›</span>
+    <a href="/blog/tags/">tags</a>
+    <span class="sep">›</span>
+    <span style="color:var(--subtle);">#{tag}</span>
+  </div>
+
+  <TuiBox title={`#${tag}`} accent="green">
+    {posts.length === 0 ? (
+      <div class="empty-state">
+        <div class="icon">▪</div>
+        <p>no published posts with this tag</p>
+      </div>
+    ) : (
+      posts.map((post) => (
+        <a href={getPostPath(post.id)} class="blog-entry" style="display:block; text-decoration:none;">
+          <div>
+            <span class="title">{post.data.title}</span>
+            <span class="arrow"> →</span>
+            <span class="date" style="margin-left:12px;">{formatPostDate(post.data.pubDate)}</span>
+          </div>
+          {post.data.description && (
+            <div class="excerpt">{post.data.description}</div>
+          )}
+        </a>
+      ))
+    )}
+  </TuiBox>
+</BlogLayout>
