@@ -1,0 +1,45 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import TuiBox from '../../components/TuiBox.astro';
+import { render } from 'astro:content';
+import { getPublishedPosts, formatPostDate } from '../../lib/posts';
+import { slugifyTag } from '../../lib/tags';
+import type { PostEntry } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts({ includeDrafts: false });
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+type Props = { post: PostEntry };
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogLayout title={post.data.title} description={post.data.description}>
+  <div class="blog-nav">
+    <a href="/blog/">~/blog</a>
+    <span class="sep">›</span>
+    <span style="color:var(--subtle);">{post.data.title}</span>
+  </div>
+
+  <TuiBox title={post.data.title} accent="pink" focused>
+    <div class="post-meta">
+      <span class="date">published {formatPostDate(post.data.pubDate)}</span>
+      {post.data.updated && (
+        <span class="read-time">· updated {formatPostDate(post.data.updated)}</span>
+      )}
+      {post.data.tags.map((tag) => (
+        <a href={`/blog/tags/${slugifyTag(tag)}/`} class="tag-chip">#{tag}</a>
+      ))}
+    </div>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </TuiBox>
+</BlogLayout>

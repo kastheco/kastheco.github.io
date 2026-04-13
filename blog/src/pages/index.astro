@@ -1,0 +1,46 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import TuiBox from '../components/TuiBox.astro';
+import { getPublishedPosts, getPostPath, formatPostDate } from '../lib/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<BlogLayout
+  title="blog"
+  description="Notes on systems programming, developer tooling, and the occasional detour into type theory."
+>
+  <TuiBox title="~/blog" accent="purple" focused>
+    {posts.length === 0 ? (
+      <div class="empty-state">
+        <div class="icon">▪</div>
+        <p>transmission pending — no dispatches yet</p>
+      </div>
+    ) : (
+      posts.map((post) => (
+        <a href={getPostPath(post.id)} class="blog-entry" style="display:block; text-decoration:none;">
+          <div>
+            <span class="title">{post.data.title}</span>
+            <span class="arrow"> →</span>
+            <span class="date" style="margin-left:12px;">{formatPostDate(post.data.pubDate)}</span>
+          </div>
+          {post.data.description && (
+            <div class="excerpt">{post.data.description}</div>
+          )}
+          {post.data.tags.length > 0 && (
+            <div class="tags">
+              {post.data.tags.map((tag) => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </a>
+      ))
+    )}
+  </TuiBox>
+
+  <div style="margin-top:8px; font-size:0.8rem; display:flex; gap:16px;">
+    <a href="/blog/tags/" style="color:var(--foam);">browse by tag →</a>
+    <a href="/blog/rss.xml" style="color:var(--foam);">rss feed →</a>
+  </div>
+</BlogLayout>

@@ -1,0 +1,21 @@
+INFO  2026-04-13T20:13:24 +393ms service=default version=1.4.3 args=["--agent","master","--prompt","You are the master readiness review agent. You run during the `verifying` FSM state.\n\nLoad the `kasmos-master` skill before starting.\n\n## Instructions\n\n1. Retrieve the plan: prefer MCP `task_show` (filename: \"blog\", project: \"kastheco.github.io\"); fall back to `kas task show blog`\n2. Gather evidence:\n   - Merge-base diff: `MERGE_BASE=$(git merge-base HEAD main) && git diff $MERGE_BASE HEAD`\n   - Run verification: `go build ./... && go test ./...` (or the plan's verify_checks)\n3. Review the implementation holistically against the plan and signal your decision:\n   - Approved: prefer MCP `signal_create` (signal_type: \"verify_approved\", plan_file: \"blog\", project: \"kastheco.github.io\"); fall back to `kas signal emit verify_approved blog`\n   - Changes requested: prefer MCP `signal_create` (signal_type: \"verify_failed\", plan_file: \"blog\", project: \"kastheco.github.io\"); fall back to `kas signal emit verify_failed blog`\n   - Include your review summary in the signal payload body field.\n\nDo not emit `review_approved` or `review_changes_requested` — use `verify_approved` or `verify_failed` above.","--print-logs"] opencode
+INFO  2026-04-13T20:13:24 +2ms service=default directory=/home/kas/dev/kastheco.github.io/.worktrees/plan-blog creating instance
+INFO  2026-04-13T20:13:24 +5ms service=project directory=/home/kas/dev/kastheco.github.io/.worktrees/plan-blog fromDirectory
+INFO  2026-04-13T20:13:24 +43ms service=db path=/home/kas/.local/share/opencode/opencode.db opening database
+INFO  2026-04-13T20:13:24 +6ms service=db count=10 mode=bundled applying migrations
+INFO  2026-04-13T20:13:24 +23ms service=config path=/home/kas/.config/opencode/config.json loading
+INFO  2026-04-13T20:13:24 +0ms service=config path=/home/kas/.config/opencode/opencode.json loading
+INFO  2026-04-13T20:13:24 +1ms service=config path=/home/kas/.config/opencode/opencode.jsonc loading
+WARN  2026-04-13T20:13:24 +0ms service=config path=/home/kas/.config/opencode/opencode.jsonc tui keys in opencode config are deprecated; move them to tui.json
+INFO  2026-04-13T20:13:27 +3018ms service=tui.plugin id=internal:home-footer loading internal tui plugin
+INFO  2026-04-13T20:13:27 +1ms service=tui.plugin id=internal:home-tips loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:sidebar-context loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:sidebar-mcp loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:sidebar-lsp loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:sidebar-todo loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:sidebar-files loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:sidebar-footer loading internal tui plugin
+INFO  2026-04-13T20:13:27 +0ms service=tui.plugin id=internal:plugin-manager loading internal tui plugin
+ERROR 2026-04-13T20:21:40 +493167ms service=default e=setRawMode failed with errno: 5 exception
+ERROR 2026-04-13T20:21:40 +0ms service=default Error: setRawMode failed with errno: 5
+ERROR 2026-04-13T20:21:40 +4ms service=default e=EIO: i/o error, write exception

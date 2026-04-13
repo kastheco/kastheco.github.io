@@ -1,0 +1,38 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import TuiBox from '../../components/TuiBox.astro';
+import { getPublishedPosts } from '../../lib/posts';
+import { getTagSummaries } from '../../lib/tags';
+
+const posts = await getPublishedPosts({ includeDrafts: false });
+const tags = getTagSummaries(posts);
+---
+
+<BlogLayout title="tags" description="Browse posts by tag.">
+  <div class="blog-nav">
+    <a href="/blog/">~/blog</a>
+    <span class="sep">›</span>
+    <span style="color:var(--subtle);">tags</span>
+  </div>
+
+  <TuiBox title="tags" accent="green">
+    {tags.length === 0 ? (
+      <div class="empty-state">
+        <div class="icon">▪</div>
+        <p>no tags indexed yet</p>
+      </div>
+    ) : (
+      tags.map((tag) => (
+        <div class="blog-entry">
+          <a href={`/blog/tags/${tag.slug}/`} style="display:block; text-decoration:none;">
+            <span class="title">#{tag.label}</span>
+            <span class="arrow"> →</span>
+            <span class="date" style="margin-left:12px;">
+              {tag.count} post{tag.count !== 1 ? 's' : ''}
+            </span>
+          </a>
+        </div>
+      ))
+    )}
+  </TuiBox>
+</BlogLayout>
