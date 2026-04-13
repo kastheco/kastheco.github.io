@@ -1,0 +1,38 @@
+---
+interface Props {
+  title?: string;
+  accent?: 'purple' | 'pink' | 'green' | 'blue' | 'default';
+  focused?: boolean;
+  class?: string;
+}
+
+const {
+  title = '',
+  accent = 'default',
+  focused = false,
+  class: className = '',
+} = Astro.props;
+
+const boxClasses = [
+  'tui-box',
+  `accent-${accent}`,
+  focused ? 'focused' : '',
+  className,
+].filter(Boolean).join(' ');
+---
+
+<div class={boxClasses}>
+  <div class="border-top">
+    <span>╭</span><span>─ </span>{title && <span class="box-title">{title}</span>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+  </div>
+  <div class="border-mid">
+    <span class="side">│</span>
+    <div class="box-content">
+      <slot />
+    </div>
+    <span class="side">│</span>
+  </div>
+  <div class="border-bottom">
+    <span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╯</span>
+  </div>
+</div>
