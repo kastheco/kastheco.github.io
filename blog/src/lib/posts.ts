@@ -12,13 +12,7 @@ export async function getPublishedPosts(
 ): Promise<PostEntry[]> {
   const includeDrafts = options?.includeDrafts ?? !import.meta.env.PROD;
 
-  let entries: PostEntry[] = [];
-  try {
-    entries = await getCollection('posts');
-  } catch {
-    // Empty collection — return empty array instead of throwing.
-    return [];
-  }
+  const entries = await getCollection('posts');
 
   const filtered = includeDrafts
     ? entries
@@ -45,5 +39,6 @@ export function formatPostDate(date: Date): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   });
 }
