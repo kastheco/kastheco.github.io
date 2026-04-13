@@ -6,7 +6,7 @@ tags:
   - recovery
   - btrfs
   - ai
-draft: true
+draft: false
 ---
 
 > full transparency: this post was written with ai, but not in the lazy “generate slop and hit publish” sense. it was produced using the same kind of tuned, persistent ai system this story is partly about, then reviewed and edited by me afterward.
