@@ -22,7 +22,7 @@ const {
   tags = [],
 } = Astro.props;
 
-const pageTitle = `${title} | kas.the.dev/blog`;
+const pageTitle = `${title} | kasthe.co/blog`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL('/og-image.png', Astro.site).href;
 
@@ -55,7 +55,7 @@ const articleJsonLd = ogType === 'article' && pubDate
   <link rel="canonical" href={canonical} />
 
   <!-- open graph -->
-  <meta property="og:site_name" content="kas.the.dev/blog" />
+  <meta property="og:site_name" content="kasthe.co/blog" />
   <meta property="og:title" content={title} />
   {description && <meta property="og:description" content={description} />}
   <meta property="og:type" content={ogType} />
