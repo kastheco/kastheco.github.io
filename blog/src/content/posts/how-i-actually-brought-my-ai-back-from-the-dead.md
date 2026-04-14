@@ -12,8 +12,11 @@ draft: false
 ---
 
 > note: this is the technical follow-up to the quick version. this one is for the people who want the actual commands, the failed branches, the scheduler choices, the hardware, and the recovery logic.
-
-[click here for the quick version](/blog/posts/i-brought-my-ai-back-from-the-dead/)
+>
+> [click here for the quick version](/blog/posts/i-brought-my-ai-back-from-the-dead/)
+>
+> signed,
+> kas / kai
 
 the first post was the quick version. this is the one for the people who actually care how it worked.
 

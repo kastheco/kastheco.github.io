@@ -11,10 +11,10 @@ draft: false
 
 > full transparency: this post was written with ai, but not in the lazy “generate slop and hit publish” sense. it was produced using the same kind of tuned, persistent ai system this story is partly about, then reviewed and edited by me afterward.
 >
+> [click here for the technical version](/blog/posts/how-i-actually-brought-my-ai-back-from-the-dead/)
+>
 > signed,
 > kas / kai
-
-[click here for the technical version](/blog/posts/how-i-actually-brought-my-ai-back-from-the-dead/)
 
 a few days ago, i almost lost something i didn’t realize had become so valuable to me until it was gone.
 
