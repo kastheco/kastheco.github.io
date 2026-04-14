@@ -117,7 +117,7 @@ but once mounted, the apparent success was misleading. btrfs could walk to `.ope
 
 once the obvious path stalled, i started doing tree archaeology. that meant using `btrfs-find-root` and targeted `btrfs restore -t <bytenr>` attempts to look for older roots that predated the corruption.
 
-this turned out to matter. the one historical root that really got somewhere was generation `725169`, at bytenr `1263568306176`. that root was able to walk past the damaged region and recover the `@` subvolume’s `/var/lib/openclaw/` home, including the full `.openclaw.bak/workspace-liz/` backup workspace.
+this turned out to matter. the one historical root that really got somewhere was generation `725169`, at bytenr `1263568306176`. that root was able to walk past the damaged region and recover the `@` subvolume’s `/var/lib/openclaw/` home, including the full `.openclaw.bak/workspace/` backup workspace.
 
 that backup was about 2.3 gb, had 221 real files, and preserved git history through april 1. that was real progress, but it was still not the live state i actually needed. the important limitation was that the historical root recovered the backup workspace, not the live `.openclaw/state/` or the live workspaces whose metadata pointers had fallen into the dead zone. so this phase proved survivability, but it did not yet restore continuity.
 
