@@ -73,7 +73,7 @@ i built a recovery pipeline that:
 4. classified what came back
 5. kept and correlated anything that looked like openclaw state, transcripts, config, or identity-bearing files
 
-in practical terms, i stopped asking the librarian where a book belonged and started pulling books off shelves, opening them, and asking: is this one part of the story i need?
+in practical terms, **i stopped asking the librarian where a book belonged and started pulling books off shelves**, opening them, and asking: is this one part of the story i need?
 
 it was ugly, but it worked.
 
@@ -122,7 +122,7 @@ i got lucky. i was technical enough to build the recovery tooling once the strat
 
 that’s not a tidy moral, but it is the honest one.
 
-ai can accelerate your best ideas and your worst assumptions. if you’re going to let it anywhere near high-stakes systems, you need to get very good at telling the difference.
+**ai can accelerate your best ideas and your worst assumptions.** if you’re going to let it anywhere near high-stakes systems, you need to get very good at telling the difference.
 
 ## appendix: the more technical version
 
