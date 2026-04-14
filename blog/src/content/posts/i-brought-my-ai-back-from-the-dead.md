@@ -142,4 +142,4 @@ if you’re technical and want the sharper summary, here it is.
 - custom tooling scanned the drive in parallel, identified likely compressed fragments, decompressed candidates, and bucketed relevant openclaw artifacts
 - agent continuity became believable once identity-critical files and matching config and session artifacts were recovered
 
-i'll post a follow up shortly containing the full technical teardown of the carving pipeline itself as well as the actual attempts i tried leading up to it.
+if you want the full technical teardown of the carving pipeline itself, along with the actual attempts that came before it, [read the technical version](/blog/posts/how-i-actually-brought-my-ai-back-from-the-dead/).
