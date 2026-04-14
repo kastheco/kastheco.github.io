@@ -343,20 +343,22 @@ a:hover { color: var(--iris); text-decoration: underline; }
 @media (max-width: 720px) {
   .post-layout { grid-template-columns: 1fr; gap: 16px; }
   .toc {
-    position: fixed;
-    top: 12px;
-    left: 12px;
+    position: sticky;
+    top: 0;
     z-index: 100;
-    max-width: calc(100vw - 24px);
-    max-height: calc(100vh - 24px);
+    max-width: none;
+    max-height: calc(100vh - 16px);
     background: var(--surface);
     border: 1px solid var(--overlay);
-    padding: 8px 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    border-left: none;
+    border-right: none;
+    padding: 10px 16px;
+    margin: 0 -16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     transition: padding 0.25s ease;
   }
   .toc.collapsed {
-    padding: 6px 10px;
+    padding: 8px 16px;
   }
   .toc.collapsed .toc-toggle {
     border-bottom: none;
