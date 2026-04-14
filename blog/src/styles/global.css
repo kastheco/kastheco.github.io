@@ -108,12 +108,24 @@ a:hover { color: var(--iris); text-decoration: underline; }
     align-items: flex-start;
   }
   .tui-box .box-header-mobile .side {
+    align-self: stretch;
+    width: 1ch;
+    font-size: 0;
+    position: relative;
     user-select: none;
-    line-height: 1.65;
-    color: var(--overlay);
     flex-shrink: 0;
   }
-  .tui-box.focused .box-header-mobile .side { color: var(--iris); }
+  .tui-box .box-header-mobile .side::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--overlay);
+    transform: translateX(-0.5px);
+  }
+  .tui-box.focused .box-header-mobile .side::after { background: var(--iris); }
   .tui-box .box-header-mobile-inner {
     flex: 1;
     min-width: 0;
@@ -262,8 +274,18 @@ a:hover { color: var(--iris); text-decoration: underline; }
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
+.post-meta-dates { display: flex; align-items: center; gap: 8px; }
+.post-meta-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .post-meta .date { color: var(--muted); }
 .post-meta .read-time { color: var(--subtle); }
+
+@media (max-width: 720px) {
+  .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
 
 .post-description {
   color: var(--subtle);

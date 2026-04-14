@@ -55,13 +55,19 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     <article class="post-main" id="intro">
       <TuiBox title={post.data.title} titleBadge={post.data.titleBadge} accent="pink" focused>
         <div class="post-meta">
-          <span class="date">published {formatPostDate(post.data.pubDate)}</span>
-          {post.data.updated && (
-            <span class="read-time">· updated {formatPostDate(post.data.updated)}</span>
+          <div class="post-meta-dates">
+            <span class="date">published {formatPostDate(post.data.pubDate)}</span>
+            {post.data.updated && (
+              <span class="read-time">· updated {formatPostDate(post.data.updated)}</span>
+            )}
+          </div>
+          {post.data.tags.length > 0 && (
+            <div class="post-meta-tags">
+              {post.data.tags.map((tag) => (
+                <a href={`/blog/tags/${slugifyTag(tag)}/`} class="tag-chip">#{tag}</a>
+              ))}
+            </div>
           )}
-          {post.data.tags.map((tag) => (
-            <a href={`/blog/tags/${slugifyTag(tag)}/`} class="tag-chip">#{tag}</a>
-          ))}
         </div>
 
         {post.data.description && (
