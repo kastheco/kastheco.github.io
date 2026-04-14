@@ -7,6 +7,7 @@ tags:
   - recovery
   - btrfs
   - ai
+  - openclaw
   - technical
 draft: false
 ---
