@@ -260,18 +260,60 @@ a:hover { color: var(--iris); text-decoration: underline; }
   position: sticky;
   top: 16px;
   max-height: calc(100vh - 32px);
-  overflow-y: auto;
   font-size: 0.76rem;
-  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
-.toc-title {
+.toc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0 0 6px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--highlight-med);
   color: var(--rose);
+  font-family: inherit;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--highlight-med);
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
 }
+.toc-toggle:hover { color: var(--iris); }
+.toc-chevron {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  font-size: 0.7rem;
+  width: 0.85em;
+  text-align: center;
+}
+.toc.collapsed .toc-chevron { transform: rotate(-90deg); }
+
+.toc-nav-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease, opacity 0.25s ease;
+  min-height: 0;
+  opacity: 1;
+}
+.toc-nav-wrap > nav {
+  overflow: hidden;
+  min-height: 0;
+}
+.toc:not(.collapsed) .toc-nav-wrap > nav {
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.toc.collapsed .toc-nav-wrap {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
 .toc nav ul { list-style: none; padding: 0; margin: 0; }
 .toc nav li { margin: 0; line-height: 1.4; }
 .toc nav li a {
@@ -301,12 +343,25 @@ a:hover { color: var(--iris); text-decoration: underline; }
 @media (max-width: 720px) {
   .post-layout { grid-template-columns: 1fr; gap: 16px; }
   .toc {
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-    margin-bottom: 8px;
-    padding: 10px 14px;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    background: var(--surface);
     border: 1px solid var(--overlay);
+    padding: 8px 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    transition: padding 0.25s ease;
+  }
+  .toc.collapsed {
+    padding: 6px 10px;
+  }
+  .toc.collapsed .toc-toggle {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
   }
 }
 
