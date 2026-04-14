@@ -21,7 +21,15 @@ const { Content, headings } = await render(post);
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-<BlogLayout title={post.data.title} description={post.data.description} wide>
+<BlogLayout
+  title={post.data.title}
+  description={post.data.description}
+  wide
+  ogType="article"
+  pubDate={post.data.pubDate}
+  updated={post.data.updated}
+  tags={post.data.tags}
+>
   <div class="post-layout">
     {tocHeadings.length > 0 && (
       <aside class="toc">

@@ -6,11 +6,41 @@ interface Props {
   title: string;
   description?: string;
   wide?: boolean;
+  ogType?: 'website' | 'article';
+  pubDate?: Date;
+  updated?: Date;
+  tags?: string[];
 }
 
-const { title, description = '', wide = false } = Astro.props;
+const {
+  title,
+  description = '',
+  wide = false,
+  ogType = 'website',
+  pubDate,
+  updated,
+  tags = [],
+} = Astro.props;
 
 const pageTitle = `${title} | kas.the.dev/blog`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og-image.png', Astro.site).href;
+
+const articleJsonLd = ogType === 'article' && pubDate
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description,
+      image: ogImage,
+      datePublished: pubDate.toISOString(),
+      ...(updated ? { dateModified: updated.toISOString() } : {}),
+      author: { '@type': 'Person', name: 'kas', url: 'https://kasthe.dev/' },
+      publisher: { '@type': 'Person', name: 'kas', url: 'https://kasthe.dev/' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+      keywords: tags.join(', '),
+    }
+  : null;
 ---
 
 <!DOCTYPE html>
@@ -20,6 +50,35 @@ const pageTitle = `${title} | kas.the.dev/blog`;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
   {description && <meta name="description" content={description} />}
+  <meta name="author" content="kas" />
+  <meta name="theme-color" content="#232136" />
+  <link rel="canonical" href={canonical} />
+
+  <!-- open graph -->
+  <meta property="og:site_name" content="kas.the.dev/blog" />
+  <meta property="og:title" content={title} />
+  {description && <meta property="og:description" content={description} />}
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta property="og:image:alt" content="kasmos k logo" />
+  {ogType === 'article' && pubDate && (
+    <meta property="article:published_time" content={pubDate.toISOString()} />
+  )}
+  {ogType === 'article' && updated && (
+    <meta property="article:modified_time" content={updated.toISOString()} />
+  )}
+  {ogType === 'article' && tags.map((tag) => (
+    <meta property="article:tag" content={tag} />
+  ))}
+
+  <!-- twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={title} />
+  {description && <meta name="twitter:description" content={description} />}
+  <meta name="twitter:image" content={ogImage} />
 
   <!-- favicon -->
   <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -34,6 +93,10 @@ const pageTitle = `${title} | kas.the.dev/blog`;
 
   <!-- RSS autodiscovery -->
   <link rel="alternate" type="application/rss+xml" title="kas.the.dev blog" href="/blog/rss.xml" />
+
+  {articleJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  )}
 </head>
 <body>
   <div class={`container${wide ? ' container-wide' : ''}`}>
