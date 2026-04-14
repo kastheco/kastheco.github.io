@@ -29,8 +29,12 @@ const boxClasses = [
   </div>
   {(title || titleBadge) && (
     <div class="box-header-mobile">
-      {title && <span class="box-title">{title}</span>}
-      {titleBadge && <span class="box-title-badge"> [{titleBadge}]</span>}
+      <span class="side">│</span>
+      <div class="box-header-mobile-inner">
+        {title && <span class="box-title">{title}</span>}
+        {titleBadge && <span class="box-title-badge"> [{titleBadge}]</span>}
+      </div>
+      <span class="side">│</span>
     </div>
   )}
   <div class="border-mid">

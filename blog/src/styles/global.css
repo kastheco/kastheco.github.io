@@ -99,23 +99,26 @@ a:hover { color: var(--iris); text-decoration: underline; }
 .tui-box .box-header-mobile { display: none; }
 
 @media (max-width: 720px) {
-  .tui-box .border-top,
-  .tui-box .border-bottom,
-  .tui-box .border-mid .side {
+  .tui-box .box-title-inline,
+  .tui-box .box-title-badge-inline {
     display: none;
   }
-  .tui-box {
-    border: 1px solid var(--overlay);
-    transition: border-color 0.15s;
-  }
-  .tui-box.focused { border-color: var(--iris); }
-  .tui-box .border-mid { display: block; }
-  .tui-box .box-content { padding: 10px 14px 12px; }
   .tui-box .box-header-mobile {
-    display: block;
-    padding: 8px 14px 8px;
-    border-bottom: 1px solid var(--highlight-med);
-    line-height: 1.35;
+    display: flex;
+    align-items: flex-start;
+  }
+  .tui-box .box-header-mobile .side {
+    user-select: none;
+    line-height: 1.65;
+    color: var(--overlay);
+    flex-shrink: 0;
+  }
+  .tui-box.focused .box-header-mobile .side { color: var(--iris); }
+  .tui-box .box-header-mobile-inner {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 14px 4px;
+    line-height: 1.4;
     word-break: break-word;
   }
   .tui-box .box-header-mobile .box-title { font-weight: 700; }
