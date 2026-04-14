@@ -88,10 +88,22 @@
       white-space: nowrap;
       overflow: hidden;
     }
+    .tui-box.inline-title .border-top { position: relative; }
     .tui-box.focused .border-top,
     .tui-box.focused .border-bottom { color: var(--iris); }
     .tui-box .border-fill { flex: 1; overflow: hidden; }
     .tui-box .box-title { font-weight: 700; }
+    .tui-box.inline-title .box-title-overlay {
+      position: absolute;
+      top: 0;
+      left: 2ch;
+      padding: 0 1ch;
+      background: var(--base);
+      line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
     .tui-box .border-mid {
       display: flex;
     }
@@ -335,9 +347,10 @@
     </div>
 
     <!-- blog -->
-    <div class="tui-box fade-up-1">
+    <div class="tui-box inline-title fade-up-1">
       <div class="border-top">
-        <span>╭</span><span>─ </span><span class="box-title" style="color: var(--iris);">/blog</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+        <span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+        <span class="box-title-overlay"><span class="box-title" style="color: var(--iris);">/blog</span></span>
       </div>
       <div class="border-mid">
         <span class="side">│</span>

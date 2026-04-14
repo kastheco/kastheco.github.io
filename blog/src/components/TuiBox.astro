@@ -28,7 +28,21 @@ const boxClasses = [
 
 <div class={boxClasses}>
   <div class="border-top">
-    <span>╭</span><span>─ </span>{title && <span class="box-title box-title-inline">{title}</span>}{titleBadge && <>{'  '}<span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span></>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+    {inlineTitle ? (
+      <>
+        <span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+        {(title || titleBadge) && (
+          <span class="box-title-overlay">
+            {title && <span class="box-title box-title-inline">{title}</span>}
+            {titleBadge && <span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span>}
+          </span>
+        )}
+      </>
+    ) : (
+      <>
+        <span>╭</span><span>─ </span>{title && <span class="box-title box-title-inline">{title}</span>}{titleBadge && <>{'  '}<span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span></>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
+      </>
+    )}
   </div>
   {!inlineTitle && (title || titleBadge) && (
     <div class="box-header-mobile">

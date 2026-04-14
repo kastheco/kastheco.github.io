@@ -61,10 +61,22 @@ a:hover { color: var(--iris); text-decoration: underline; }
   white-space: nowrap;
   overflow: hidden;
 }
+.tui-box.inline-title .border-top { position: relative; }
 .tui-box.focused .border-top,
 .tui-box.focused .border-bottom { color: var(--iris); }
 .tui-box .border-fill { flex: 1; overflow: hidden; }
 .tui-box .box-title { font-weight: 700; }
+.tui-box.inline-title .box-title-overlay {
+  position: absolute;
+  top: 0;
+  left: 2ch;
+  padding: 0 1ch;
+  background: var(--base);
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 .tui-box .box-title-badge {
   color: var(--gold);
   font-weight: 500;
