@@ -100,10 +100,17 @@
       padding: 0 1ch;
       background: var(--base);
       line-height: 1.2;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-block;
+      white-space: nowrap;
     }
+    .tui-box.inline-title a.box-title-overlay,
+    .tui-box.inline-title a.box-title-overlay:hover {
+      color: inherit;
+      text-decoration: none;
+    }
+    .tui-box.inline-title .box-content { padding-top: 0; padding-bottom: 0; }
+    .tui-box.inline-title .blog-entry:first-child { padding-top: 6px; }
+    .tui-box.inline-title .blog-entry:last-child { padding-bottom: 6px; }
     .tui-box .border-mid {
       display: flex;
     }
@@ -350,7 +357,7 @@
     <div class="tui-box inline-title fade-up-1">
       <div class="border-top">
         <span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
-        <span class="box-title-overlay"><span class="box-title" style="color: var(--iris);">/blog</span></span>
+        <a href="/blog/" class="box-title-overlay"><span class="box-title" style="color: var(--iris);">/blog</span></a>
       </div>
       <div class="border-mid">
         <span class="side">│</span>

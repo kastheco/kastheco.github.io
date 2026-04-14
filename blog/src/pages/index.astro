@@ -10,7 +10,7 @@ const posts = await getPublishedPosts();
   title="blog"
   description="i build things, break things, recover things, and write about what i learn along the way"
 >
-  <TuiBox title="/blog" accent="purple" focused inlineTitle>
+  <TuiBox title="/blog" accent="purple" focused inlineTitle titleHref="/blog/">
     {posts.length === 0 ? (
       <div class="empty-state">
         <div class="icon">▪</div>

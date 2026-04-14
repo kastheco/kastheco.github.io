@@ -73,10 +73,17 @@ a:hover { color: var(--iris); text-decoration: underline; }
   padding: 0 1ch;
   background: var(--base);
   line-height: 1.2;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-block;
+  white-space: nowrap;
 }
+.tui-box.inline-title a.box-title-overlay,
+.tui-box.inline-title a.box-title-overlay:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.tui-box.inline-title .box-content { padding-top: 0; padding-bottom: 0; }
+.tui-box.inline-title .blog-entry:first-child { padding-top: 6px; }
+.tui-box.inline-title .blog-entry:last-child { padding-bottom: 6px; }
 .tui-box .box-title-badge {
   color: var(--gold);
   font-weight: 500;

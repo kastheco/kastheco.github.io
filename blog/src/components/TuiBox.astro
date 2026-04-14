@@ -5,6 +5,7 @@ interface Props {
   accent?: 'purple' | 'pink' | 'green' | 'blue' | 'default';
   focused?: boolean;
   inlineTitle?: boolean;
+  titleHref?: string;
   class?: string;
 }
 
@@ -14,6 +15,7 @@ const {
   accent = 'default',
   focused = false,
   inlineTitle = false,
+  titleHref,
   class: className = '',
 } = Astro.props;
 
@@ -31,12 +33,11 @@ const boxClasses = [
     {inlineTitle ? (
       <>
         <span>╭</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
-        {(title || titleBadge) && (
-          <span class="box-title-overlay">
-            {title && <span class="box-title box-title-inline">{title}</span>}
-            {titleBadge && <span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span>}
-          </span>
-        )}
+        {(title || titleBadge) && (titleHref ? (
+          <a class="box-title-overlay" href={titleHref}>{title && <span class="box-title box-title-inline">{title}</span>}{titleBadge && <span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span>}</a>
+        ) : (
+          <span class="box-title-overlay">{title && <span class="box-title box-title-inline">{title}</span>}{titleBadge && <span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span>}</span>
+        ))}
       </>
     ) : (
       <>
