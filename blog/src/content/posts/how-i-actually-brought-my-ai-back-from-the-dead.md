@@ -37,7 +37,6 @@ the second machine mattered more than i expected, and i want to be explicit abou
 captured hardware details:
 
 - framework laptop 16 (amd ryzen ai 300 series)
-- hardware sku: `FRAGAMCP09`
 - cpu: amd ryzen ai 9 hx 370 with radeon 890m
 - 12 cores / 24 threads
 - max boost: 5.15 ghz
@@ -150,7 +149,7 @@ the winning path became a custom script called `openclaw-carve-enhanced.py`. it 
 one of the earliest handoff commands in shell history is literally:
 
 ```bash
-scp kas@192.168.2.100:/home/kas/openclaw-carve.sh /tmp/
+scp kas@<pc-lan-ip>:/home/kas/openclaw-carve.sh /tmp/
 ```
 
 from there, the enhanced version became the real workhorse.
