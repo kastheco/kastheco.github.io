@@ -95,10 +95,27 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
         setCollapsed(!toc.classList.contains('collapsed'));
       });
 
-      // collapse on mobile after a TOC link is tapped
+      // on mobile: collapse instantly, then smooth-scroll to the target.
+      // doing this in the wrong order makes the layout shift after the scroll
+      // and dumps the user past the heading they clicked.
       toc.querySelectorAll('nav a').forEach((a) => {
-        a.addEventListener('click', () => {
-          if (mq.matches) setCollapsed(true);
+        a.addEventListener('click', (e) => {
+          if (!mq.matches) return;
+          const href = a.getAttribute('href');
+          if (!href || !href.startsWith('#')) return;
+          const target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+
+          toc.classList.add('no-anim');
+          setCollapsed(true);
+          // force a synchronous layout flush so the collapse takes effect now
+          void toc.offsetHeight;
+          requestAnimationFrame(() => {
+            toc.classList.remove('no-anim');
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', href);
+          });
         });
       });
     })();
