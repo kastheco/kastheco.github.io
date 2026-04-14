@@ -389,6 +389,21 @@ a:hover { color: var(--iris); text-decoration: underline; }
 .toc:not(.collapsed) .toc-nav-wrap > nav {
   overflow-y: auto;
   padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--overlay) transparent;
+}
+.toc:not(.collapsed) .toc-nav-wrap > nav::-webkit-scrollbar {
+  width: 6px;
+}
+.toc:not(.collapsed) .toc-nav-wrap > nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+.toc:not(.collapsed) .toc-nav-wrap > nav::-webkit-scrollbar-thumb {
+  background: var(--overlay);
+  border-radius: 3px;
+}
+.toc:not(.collapsed) .toc-nav-wrap > nav::-webkit-scrollbar-thumb:hover {
+  background: var(--iris);
 }
 .toc.collapsed .toc-nav-wrap {
   grid-template-rows: 0fr;
