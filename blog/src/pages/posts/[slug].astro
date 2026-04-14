@@ -40,6 +40,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
         <div class="toc-nav-wrap">
           <nav id="toc-nav">
             <ul>
+              <li class="toc-level-2"><a href="#intro">intro</a></li>
               {tocHeadings.map((h) => (
                 <li class={`toc-level-${h.depth}`}>
                   <a href={`#${h.slug}`}>{h.text}</a>
@@ -51,7 +52,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       </aside>
     )}
 
-    <article class="post-main">
+    <article class="post-main" id="intro">
       <TuiBox title={post.data.title} titleBadge={post.data.titleBadge} accent="pink" focused>
         <div class="post-meta">
           <span class="date">published {formatPostDate(post.data.pubDate)}</span>

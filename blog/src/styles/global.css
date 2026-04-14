@@ -254,7 +254,11 @@ a:hover { color: var(--iris); text-decoration: underline; }
   gap: 28px;
   align-items: start;
 }
-.post-layout .post-main { min-width: 0; }
+.post-layout .post-main { min-width: 0; scroll-margin-top: 16px; }
+
+@media (max-width: 720px) {
+  .post-layout .post-main { scroll-margin-top: 64px; }
+}
 
 .toc {
   position: sticky;
