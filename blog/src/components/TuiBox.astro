@@ -4,6 +4,7 @@ interface Props {
   titleBadge?: string;
   accent?: 'purple' | 'pink' | 'green' | 'blue' | 'default';
   focused?: boolean;
+  inlineTitle?: boolean;
   class?: string;
 }
 
@@ -12,6 +13,7 @@ const {
   titleBadge = '',
   accent = 'default',
   focused = false,
+  inlineTitle = false,
   class: className = '',
 } = Astro.props;
 
@@ -19,6 +21,7 @@ const boxClasses = [
   'tui-box',
   `accent-${accent}`,
   focused ? 'focused' : '',
+  inlineTitle ? 'inline-title' : '',
   className,
 ].filter(Boolean).join(' ');
 ---
@@ -27,7 +30,7 @@ const boxClasses = [
   <div class="border-top">
     <span>╭</span><span>─ </span>{title && <span class="box-title box-title-inline">{title}</span>}{titleBadge && <>{'  '}<span class="box-title-badge box-title-badge-inline">[{titleBadge}]</span></>}{title && <span> </span>}<span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
   </div>
-  {(title || titleBadge) && (
+  {!inlineTitle && (title || titleBadge) && (
     <div class="box-header-mobile">
       <span class="side" aria-hidden="true"></span>
       <div class="box-header-mobile-inner">

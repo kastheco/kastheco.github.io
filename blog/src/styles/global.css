@@ -99,11 +99,11 @@ a:hover { color: var(--iris); text-decoration: underline; }
 .tui-box .box-header-mobile { display: none; }
 
 @media (max-width: 720px) {
-  .tui-box .box-title-inline,
-  .tui-box .box-title-badge-inline {
+  .tui-box:not(.inline-title) .box-title-inline,
+  .tui-box:not(.inline-title) .box-title-badge-inline {
     display: none;
   }
-  .tui-box .box-header-mobile {
+  .tui-box:not(.inline-title) .box-header-mobile {
     display: flex;
     align-items: flex-start;
   }

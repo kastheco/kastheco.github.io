@@ -8,9 +8,9 @@ const posts = await getPublishedPosts();
 
 <BlogLayout
   title="blog"
-  description="Notes on systems programming, developer tooling, and the occasional detour into type theory."
+  description="i build things, break things, recover things, and write about what i learn along the way"
 >
-  <TuiBox title="/blog" accent="purple" focused>
+  <TuiBox title="/blog" accent="purple" focused inlineTitle>
     {posts.length === 0 ? (
       <div class="empty-state">
         <div class="icon">▪</div>
