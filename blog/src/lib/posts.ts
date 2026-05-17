@@ -6,17 +6,23 @@ export type PostEntry = CollectionEntry<'posts'>;
 /**
  * The single call-site for getCollection('posts').
  * Filters drafts in production by default; sorts newest-first by pubDate.
+ * Unlisted posts are excluded by default — only the [slug] route opts back in
+ * via includeUnlisted, so the URL still builds while the post stays out of
+ * every listing, tag page, RSS feed, etc.
  */
 export async function getPublishedPosts(
-  options?: { includeDrafts?: boolean }
+  options?: { includeDrafts?: boolean; includeUnlisted?: boolean }
 ): Promise<PostEntry[]> {
   const includeDrafts = options?.includeDrafts ?? !import.meta.env.PROD;
+  const includeUnlisted = options?.includeUnlisted ?? false;
 
   const entries = await getCollection('posts');
 
-  const filtered = includeDrafts
-    ? entries
-    : entries.filter((p) => !p.data.draft);
+  const filtered = entries.filter((p) => {
+    if (!includeDrafts && p.data.draft) return false;
+    if (!includeUnlisted && p.data.unlisted) return false;
+    return true;
+  });
 
   return filtered.sort(
     (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()

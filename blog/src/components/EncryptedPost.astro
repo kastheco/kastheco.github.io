@@ -1,0 +1,275 @@
+---
+import TuiBox from './TuiBox.astro';
+
+interface Props {
+  cipher: {
+    iv: string;
+    salt: string;
+    iterations: number;
+    ciphertext: string;
+  };
+}
+
+const { cipher } = Astro.props;
+---
+
+<div class="post-layout locked-layout">
+  <article class="post-main locked-main" id="intro">
+    <TuiBox title="" titleBadge="private" accent="pink" focused>
+      <div class="locked-post" data-cipher={JSON.stringify(cipher)}>
+        <p class="locked-msg">this post is locked.</p>
+        <form class="unlock-form" data-unlock-form>
+          <label class="visually-hidden" for="unlock-pw">passphrase</label>
+          <input
+            type="password"
+            id="unlock-pw"
+            name="passphrase"
+            placeholder="passphrase"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+          />
+          <button type="submit">unlock →</button>
+        </form>
+        <p class="unlock-error" data-unlock-error hidden></p>
+      </div>
+    </TuiBox>
+    <div class="prose" data-decrypted hidden></div>
+  </article>
+</div>
+
+<style>
+  /* Center the locked card and give it a sane fixed-ish width so the
+     "this post is locked" line never wraps. Scoped to .locked-layout /
+     .locked-main so it only applies to encrypted posts. */
+  .locked-layout {
+    display: block;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .unlocked-layout {
+    display: block;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .locked-main {
+    width: 100%;
+  }
+  .locked-post {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 8px;
+  }
+  /* Some flex implementations still count [hidden] children toward the gap,
+     so be explicit — otherwise a phantom 16px gap pads the bottom. */
+  .unlock-error[hidden] {
+    display: none;
+  }
+  /* On mobile, regular posts move the title BELOW the border because long
+     titles wrap. "[private]" is short — keep it overlaid on the border. */
+  @media (max-width: 720px) {
+    .locked-main :global(.box-title-badge-inline) {
+      display: inline !important;
+    }
+    .locked-main :global(.box-header-mobile) {
+      display: none !important;
+    }
+  }
+  .locked-msg {
+    color: var(--muted);
+    margin: 0;
+  }
+  .unlock-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .unlock-form input {
+    flex: 1 1 220px;
+    background: var(--base);
+    color: var(--text);
+    border: 1px solid var(--highlight-med);
+    padding: 8px 10px;
+    font: inherit;
+    border-radius: 2px;
+    min-width: 0;
+  }
+  .unlock-form input:focus {
+    outline: none;
+    border-color: var(--iris);
+  }
+  .unlock-form button {
+    background: var(--iris);
+    color: var(--base);
+    border: none;
+    padding: 8px 14px;
+    font: inherit;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .unlock-form button:hover {
+    background: var(--foam);
+  }
+  .unlock-error {
+    color: var(--love);
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const root = document.querySelector('.locked-post');
+    if (!root) return;
+    const cipher = JSON.parse(root.dataset.cipher);
+    const form = root.querySelector('[data-unlock-form]');
+    const input = form.querySelector('input[type=password]');
+    const errEl = root.querySelector('[data-unlock-error]');
+    const proseEl = document.querySelector('[data-decrypted]');
+    const articleBox = root.closest('.tui-box');
+
+    function b64ToBytes(b64) {
+      const bin = atob(b64);
+      const out = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    async function deriveKey(password, saltBytes, iterations) {
+      const enc = new TextEncoder();
+      const baseKey = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(password),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+      );
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: saltBytes, iterations, hash: 'SHA-256' },
+        baseKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+    }
+
+    async function decrypt(password) {
+      const salt = b64ToBytes(cipher.salt);
+      const iv = b64ToBytes(cipher.iv);
+      const ct = b64ToBytes(cipher.ciphertext);
+      const key = await deriveKey(password, salt, cipher.iterations);
+      const plainBuf = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        ct
+      );
+      return new TextDecoder().decode(plainBuf);
+    }
+
+    function fmtDate(iso) {
+      try {
+        return new Date(iso).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC',
+        });
+      } catch {
+        return '';
+      }
+    }
+
+    function slugifyTag(tag) {
+      return tag
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function reveal(payload) {
+      if (payload.title) {
+        document.title = payload.title + ' | kasthe.co/blog';
+      }
+
+      // Drop the [private] badge and inject the real title on the border,
+      // matching how a regular post titles its TuiBox.
+      if (articleBox && payload.title) {
+        articleBox
+          .querySelectorAll('.box-title-badge, .box-title-badge-inline')
+          .forEach((el) => el.remove());
+
+        const borderTop = articleBox.querySelector('.border-top');
+        const fill = borderTop?.querySelector('.border-fill');
+        if (borderTop && fill) {
+          const t = document.createElement('span');
+          t.className = 'box-title box-title-inline';
+          t.textContent = payload.title;
+          borderTop.insertBefore(t, fill);
+          borderTop.insertBefore(document.createTextNode(' '), fill);
+        }
+
+        const mobileInner = articleBox.querySelector('.box-header-mobile-inner');
+        if (mobileInner) {
+          mobileInner.innerHTML = '';
+          const t = document.createElement('span');
+          t.className = 'box-title';
+          t.textContent = payload.title;
+          mobileInner.appendChild(t);
+        }
+      }
+
+      // Expand the centered card so the body has room to read.
+      const layoutEl = document.querySelector('.locked-layout');
+      if (layoutEl) {
+        layoutEl.classList.remove('locked-layout');
+        layoutEl.classList.add('unlocked-layout');
+      }
+
+      const dateStr = payload.pubDate ? fmtDate(payload.pubDate) : '';
+      const tagsHtml = (payload.tags || [])
+        .map(
+          (t) =>
+            `<a href="/blog/tags/${slugifyTag(t)}/" class="tag-chip">#${t}</a>`
+        )
+        .join('');
+
+      root.outerHTML = `
+        <div class="post-meta">
+          ${dateStr ? `<div class="post-meta-dates"><span class="date">published ${dateStr}</span></div>` : ''}
+          ${tagsHtml ? `<div class="post-meta-tags">${tagsHtml}</div>` : ''}
+        </div>
+        ${payload.description ? `<p class="post-description">${payload.description.replace(/</g, '&lt;')}</p>` : ''}
+      `;
+
+      // Inject the body HTML
+      proseEl.innerHTML = payload.html || '';
+      proseEl.hidden = false;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errEl.hidden = true;
+      const password = input.value;
+      if (!password) return;
+      try {
+        const plaintext = await decrypt(password);
+        const payload = JSON.parse(plaintext);
+        reveal(payload);
+      } catch {
+        errEl.textContent = '✗ incorrect passphrase';
+        errEl.hidden = false;
+        input.select();
+      }
+    });
+  })();
+</script>

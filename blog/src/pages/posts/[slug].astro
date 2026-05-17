@@ -1,13 +1,17 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import TuiBox from '../../components/TuiBox.astro';
+import EncryptedPost from '../../components/EncryptedPost.astro';
 import { render } from 'astro:content';
 import { getPublishedPosts, formatPostDate } from '../../lib/posts';
 import { slugifyTag } from '../../lib/tags';
 import type { PostEntry } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getPublishedPosts({ includeDrafts: false });
+  const posts = await getPublishedPosts({
+    includeDrafts: false,
+    includeUnlisted: true,
+  });
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
@@ -17,19 +21,30 @@ export async function getStaticPaths() {
 type Props = { post: PostEntry };
 
 const { post } = Astro.props;
-const { Content, headings } = await render(post);
-const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const isEncrypted = !!post.data.cipher;
+
+// Encrypted posts skip the normal markdown render — the body lives inside
+// the cipher blob and is only available client-side after unlock.
+const rendered = isEncrypted ? null : await render(post);
+const Content = rendered?.Content;
+const tocHeadings = rendered
+  ? rendered.headings.filter((h) => h.depth === 2 || h.depth === 3)
+  : [];
 ---
 
 <BlogLayout
-  title={post.data.title}
-  description={post.data.description}
+  title={isEncrypted ? 'locked' : post.data.title}
+  description={isEncrypted ? undefined : post.data.description}
   wide
-  ogType="article"
-  pubDate={post.data.pubDate}
-  updated={post.data.updated}
-  tags={post.data.tags}
+  ogType={isEncrypted ? 'website' : 'article'}
+  pubDate={isEncrypted ? undefined : post.data.pubDate}
+  updated={isEncrypted ? undefined : post.data.updated}
+  tags={isEncrypted ? [] : post.data.tags}
+  noindex={isEncrypted || post.data.unlisted}
 >
+  {isEncrypted ? (
+    <EncryptedPost cipher={post.data.cipher!} />
+  ) : (
   <div class="post-layout">
     {tocHeadings.length > 0 && (
       <aside class="toc" data-toc>
@@ -76,11 +91,13 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       </TuiBox>
 
       <div class="prose">
-        <Content />
+        {Content && <Content />}
       </div>
     </article>
   </div>
+  )}
 
+  {!isEncrypted && (
   <script is:inline>
     (function () {
       const toc = document.querySelector('[data-toc]');
@@ -126,4 +143,5 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       });
     })();
   </script>
+  )}
 </BlogLayout>

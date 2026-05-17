@@ -10,6 +10,7 @@ interface Props {
   pubDate?: Date;
   updated?: Date;
   tags?: string[];
+  noindex?: boolean;
 }
 
 const {
@@ -20,13 +21,14 @@ const {
   pubDate,
   updated,
   tags = [],
+  noindex = false,
 } = Astro.props;
 
 const pageTitle = `${title} | kasthe.co/blog`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL('/og-image.png', Astro.site).href;
 
-const articleJsonLd = ogType === 'article' && pubDate
+const articleJsonLd = !noindex && ogType === 'article' && pubDate
   ? {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
@@ -52,7 +54,8 @@ const articleJsonLd = ogType === 'article' && pubDate
   {description && <meta name="description" content={description} />}
   <meta name="author" content="kas" />
   <meta name="theme-color" content="#232136" />
-  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex,nofollow" />}
+  {!noindex && <link rel="canonical" href={canonical} />}
 
   <!-- open graph -->
   <meta property="og:site_name" content="kasthe.co/blog" />

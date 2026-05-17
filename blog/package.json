@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "encrypt-post": "node --experimental-strip-types --no-warnings scripts/encrypt-post.ts"
   },
   "dependencies": {
     "@astrojs/check": "0.9.8",
