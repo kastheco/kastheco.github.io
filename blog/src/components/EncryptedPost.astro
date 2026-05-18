@@ -228,12 +228,10 @@ const { cipher } = Astro.props;
         }
       }
 
-      // Expand the centered card so the body has room to read.
+      // Hand layout back to the global .post-layout grid (which renders
+      // TOC + main side-by-side) once headings exist. With no headings we
+      // keep the centered single-column look.
       const layoutEl = document.querySelector('.locked-layout');
-      if (layoutEl) {
-        layoutEl.classList.remove('locked-layout');
-        layoutEl.classList.add('unlocked-layout');
-      }
 
       const dateStr = payload.pubDate ? fmtDate(payload.pubDate) : '';
       const tagsHtml = (payload.tags || [])
@@ -254,6 +252,73 @@ const { cipher } = Astro.props;
       // Inject the body HTML
       proseEl.innerHTML = payload.html || '';
       proseEl.hidden = false;
+
+      // Build the TOC from h2/h3 headings (which were auto-id'd by Astro's
+      // rehype-slug during encrypt-time render).
+      const headings = proseEl.querySelectorAll('h2[id], h3[id]');
+      if (headings.length > 0 && layoutEl) {
+        const articleEl = layoutEl.querySelector('.post-main');
+        const aside = document.createElement('aside');
+        aside.className = 'toc';
+        aside.setAttribute('data-toc', '');
+        let html = '<button class="toc-toggle" type="button" aria-expanded="true" aria-controls="toc-nav">';
+        html += '<span class="toc-chevron" aria-hidden="true">▾</span>';
+        html += '<span class="toc-title-text">contents</span></button>';
+        html += '<div class="toc-nav-wrap"><nav id="toc-nav"><ul>';
+        html += '<li class="toc-level-2"><a href="#intro">intro</a></li>';
+        headings.forEach((h) => {
+          const depth = h.tagName === 'H2' ? 2 : 3;
+          const text = h.textContent || '';
+          const id = h.id;
+          html += `<li class="toc-level-${depth}"><a href="#${id}">${text.replace(/</g, '&lt;')}</a></li>`;
+        });
+        html += '</ul></nav></div>';
+        aside.innerHTML = html;
+        layoutEl.insertBefore(aside, articleEl);
+        // hand back to the global .post-layout grid
+        layoutEl.classList.remove('locked-layout');
+        initToc(aside);
+      } else if (layoutEl) {
+        // No headings — keep the centered single-column look.
+        layoutEl.classList.remove('locked-layout');
+        layoutEl.classList.add('unlocked-layout');
+      }
+    }
+
+    // Mirrors the TOC IIFE from src/pages/posts/[slug].astro so encrypted
+    // posts get the same collapse/scroll behavior on mobile.
+    function initToc(toc) {
+      const btn = toc.querySelector('.toc-toggle');
+      const mq = window.matchMedia('(max-width: 720px)');
+
+      function setCollapsed(collapsed) {
+        toc.classList.toggle('collapsed', collapsed);
+        btn.setAttribute('aria-expanded', String(!collapsed));
+      }
+      setCollapsed(mq.matches);
+      mq.addEventListener('change', (e) => setCollapsed(e.matches));
+      btn.addEventListener('click', () => {
+        setCollapsed(!toc.classList.contains('collapsed'));
+      });
+
+      toc.querySelectorAll('nav a').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          if (!mq.matches) return;
+          const href = a.getAttribute('href');
+          if (!href || !href.startsWith('#')) return;
+          const target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+          toc.classList.add('no-anim');
+          setCollapsed(true);
+          void toc.offsetHeight;
+          requestAnimationFrame(() => {
+            toc.classList.remove('no-anim');
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', href);
+          });
+        });
+      });
     }
 
     form.addEventListener('submit', async (e) => {
