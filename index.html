@@ -172,6 +172,8 @@
     /* ── status dot ── */
     .status-dot { font-size: 0.85rem; }
     .status-dot .label { color: var(--subtle); }
+    a.status-dot { text-decoration: none; }
+    a.status-dot:hover .label { color: var(--iris); }
 
     /* ── grid ── */
     .grid-2 {
@@ -362,9 +364,6 @@
               <span class="badge" style="background: var(--gold);">tui</span>
               <span class="badge" style="background: var(--overlay); color: var(--subtle);">linux</span>
             </div>
-            <div style="margin-top: 18px;">
-              <a href="/contact/" class="intake-link">start a project →</a>
-            </div>
           </div>
         </div>
         <span class="side">│</span>
@@ -436,9 +435,8 @@
           <span class="side">│</span>
           <div class="box-content">
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <span class="status-dot" style="color: var(--foam);">● <span class="label">building freyja iq</span></span>
+              <a href="/contact/" class="status-dot" style="color: var(--rose);">● <span class="label">accepting consulting work // book a consultation →</span></a>
               <span class="status-dot" style="color: var(--foam);">● <span class="label">building kasmos</span></span>
-              <span class="status-dot" style="color: var(--gold);">● <span class="label">tuning kaspr</span></span>
             </div>
           </div>
           <span class="side">│</span>
