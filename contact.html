@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>start a project — kas</title>
+  <meta name="description" content="Tell kas what you're trying to solve and where you want help.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://kasthe.co/contact.html">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --base: #232136;
+      --surface: #2a273f;
+      --overlay: #393552;
+      --muted: #6e6a86;
+      --subtle: #908caa;
+      --text: #e0def4;
+      --rose: #ea9a97;
+      --foam: #9ccfd8;
+      --iris: #c4a7e7;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--base); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 85% 10%, rgba(196, 167, 231, 0.08), transparent 34rem),
+        var(--base);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 3px);
+      opacity: 0.3;
+    }
+
+    a { color: var(--foam); text-decoration: none; }
+    a:hover { color: var(--iris); }
+
+    .shell {
+      width: min(100% - 40px, 720px);
+      margin: 0 auto;
+      padding: 34px 0 72px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(224, 222, 244, 0.08);
+    }
+
+    .brand {
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--rose), var(--iris));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .back { color: var(--subtle); font-size: 0.8rem; }
+
+    main { padding-top: clamp(48px, 9vw, 88px); }
+
+    .eyebrow {
+      color: var(--rose);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      max-width: 650px;
+      margin: 0;
+      font-size: clamp(2rem, 7vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.055em;
+    }
+
+    .intro {
+      max-width: 540px;
+      margin: 20px 0 48px;
+      color: var(--subtle);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    form { display: grid; gap: 32px; }
+
+    .identity {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .field { display: grid; gap: 10px; }
+
+    label {
+      color: var(--foam);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .optional { color: var(--muted); font-weight: 400; }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--overlay);
+      border-radius: 0;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      padding: 8px 0 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    textarea { min-height: 112px; resize: vertical; }
+    input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+    input:focus, textarea:focus { border-color: var(--iris); }
+
+    .submit {
+      width: fit-content;
+      border: 1px solid var(--rose);
+      background: var(--rose);
+      color: var(--base);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 11px 15px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .submit:hover { background: var(--iris); border-color: var(--iris); }
+
+    .success {
+      display: none;
+      margin-bottom: 32px;
+      padding: 14px 16px;
+      border-left: 2px solid var(--foam);
+      background: rgba(156, 207, 216, 0.06);
+      color: var(--foam);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .success:target { display: block; }
+
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 32px, 720px); padding-top: 24px; }
+      .identity { grid-template-columns: 1fr; }
+      main { padding-top: 48px; }
+      .intro { margin-bottom: 38px; }
+      form { gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav" aria-label="primary">
+      <a class="brand" href="/">kas.the.dev</a>
+      <a class="back" href="/">← back home</a>
+    </nav>
+
+    <main>
+      <div class="eyebrow">START A PROJECT</div>
+      <h1>tell me what you're trying to solve.</h1>
+      <p class="intro">Give me the rough version. I’ll read it, ask the useful questions, and tell you honestly whether I can help.</p>
+
+      <div id="sent" class="success" role="status">message sent. i’ll get back to you by email.</div>
+
+      <form action="https://formsubmit.co/submissions@kasthe.dev" method="POST">
+        <input type="hidden" name="_subject" value="new project inquiry">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://kasthe.co/contact.html#sent">
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display: none;">
+
+        <div class="identity">
+          <div class="field">
+            <label for="name">name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="email">email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="problem">what's the problem?</label>
+          <textarea id="problem" name="problem" placeholder="what's happening now, and what isn't working?" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="help">how can i help?</label>
+          <textarea id="help" name="how_can_i_help" placeholder="where do you want another senior set of hands?" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="goal">what's the end goal?</label>
+          <textarea id="goal" name="end_goal" placeholder="what does good look like when this is done?" required></textarea>
+        </div>
+
+        <button class="submit" type="submit">send it →</button>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

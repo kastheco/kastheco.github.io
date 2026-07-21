@@ -272,58 +272,6 @@
       gap: 12px;
     }
 
-    /* ── intake ── */
-    .intake-intro {
-      color: var(--subtle);
-      font-size: 0.85rem;
-      line-height: 1.6;
-      max-width: 650px;
-      margin-bottom: 18px;
-    }
-    .intake-form {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px 18px;
-    }
-    .form-field { display: grid; gap: 6px; }
-    .form-field.full { grid-column: 1 / -1; }
-    .form-field label {
-      color: var(--foam);
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .form-field .optional { color: var(--muted); font-weight: 400; }
-    .form-field input,
-    .form-field textarea {
-      width: 100%;
-      border: 1px solid var(--overlay);
-      border-radius: 0;
-      background: var(--surface);
-      color: var(--text);
-      font: inherit;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      padding: 10px 12px;
-      outline: none;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .form-field textarea { min-height: 108px; resize: vertical; }
-    .form-field input::placeholder,
-    .form-field textarea::placeholder { color: var(--muted); opacity: 1; }
-    .form-field input:focus,
-    .form-field textarea:focus {
-      border-color: var(--iris);
-      background: var(--highlight-low);
-    }
-    .form-actions {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding-top: 2px;
-    }
-    .submit-button,
     .intake-link {
       display: inline-block;
       border: 1px solid var(--rose);
@@ -336,21 +284,11 @@
       cursor: pointer;
       transition: color 0.15s, background 0.15s;
     }
-    .submit-button:hover,
     .intake-link:hover {
       background: var(--rose);
       color: var(--base);
       text-decoration: none;
     }
-    .form-note { color: var(--muted); font-size: 0.72rem; line-height: 1.5; }
-    .form-success {
-      display: none;
-      color: var(--foam);
-      margin-bottom: 16px;
-      font-size: 0.82rem;
-      line-height: 1.5;
-    }
-    .form-success:target { display: block; }
 
     .link-row { display: flex; align-items: center; gap: 8px; }
     .link-row .diamond-green { color: var(--foam); }
@@ -386,11 +324,6 @@
     .fade-up-3 { animation: fadeUp 0.4s ease 0.3s both; }
     .fade-up-4 { animation: fadeUp 0.4s ease 0.4s both; }
     .fade-up-5 { animation: fadeUp 0.4s ease 0.5s both; }
-
-    @media (max-width: 620px) {
-      .intake-form { grid-template-columns: 1fr; }
-      .form-field { grid-column: 1; }
-    }
 
   </style>
 </head>
@@ -430,7 +363,7 @@
               <span class="badge" style="background: var(--overlay); color: var(--subtle);">linux</span>
             </div>
             <div style="margin-top: 18px;">
-              <a href="#intake" class="intake-link">start a project →</a>
+              <a href="/contact.html" class="intake-link">start a project →</a>
             </div>
           </div>
         </div>
@@ -621,63 +554,6 @@
         </div>
       </a>
 
-    </div>
-
-    <!-- intake -->
-    <div id="intake" class="tui-box focused accent-pink fade-up-4" style="margin-top: 24px; scroll-margin-top: 20px;">
-      <div class="border-top">
-        <span>╭</span><span>─ </span><span class="box-title">/intake</span><span> </span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╮</span>
-      </div>
-      <div class="border-mid">
-        <span class="side">│</span>
-        <div class="box-content">
-          <div class="intake-intro">
-            one workflow. one constraint. one owner. tell me what keeps repeating, what must stay true, and who makes the call.
-          </div>
-          <div id="intake-sent" class="form-success" role="status">
-            message sent. i'll reply by email.
-          </div>
-          <form class="intake-form" action="https://formsubmit.co/submissions@kasthe.dev" method="POST">
-            <input type="hidden" name="_subject" value="new kas ai intake">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://kasthe.co/?intake=sent#intake-sent">
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display: none;">
-
-            <div class="form-field">
-              <label for="intake-name">name</label>
-              <input id="intake-name" name="name" type="text" autocomplete="name" required>
-            </div>
-            <div class="form-field">
-              <label for="intake-email">email</label>
-              <input id="intake-email" name="email" type="email" autocomplete="email" required>
-            </div>
-            <div class="form-field full">
-              <label for="intake-company">company / project <span class="optional">(optional)</span></label>
-              <input id="intake-company" name="company_or_project" type="text" autocomplete="organization">
-            </div>
-            <div class="form-field full">
-              <label for="intake-repeats">what repeats or stalls?</label>
-              <textarea id="intake-repeats" name="what_repeats_or_stalls" required></textarea>
-            </div>
-            <div class="form-field full">
-              <label for="intake-constraint">what must stay true?</label>
-              <textarea id="intake-constraint" name="what_must_stay_true" required></textarea>
-            </div>
-            <div class="form-field full">
-              <label for="intake-owner">who makes the call?</label>
-              <input id="intake-owner" name="decision_owner" type="text" required>
-            </div>
-            <div class="form-actions">
-              <button class="submit-button" type="submit">send intake →</button>
-              <span class="form-note">no account required. your answers are sent by email.</span>
-            </div>
-          </form>
-        </div>
-        <span class="side">│</span>
-      </div>
-      <div class="border-bottom">
-        <span>╰</span><span class="border-fill">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span>╯</span>
-      </div>
     </div>
 
     <!-- footer -->
