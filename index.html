@@ -54,11 +54,31 @@
 
     body {
       min-height: 100vh;
-      background: var(--base);
+      background:
+        radial-gradient(circle at 16% 7%, rgba(234, 154, 151, 0.14), transparent 24rem),
+        radial-gradient(circle at 88% 18%, rgba(196, 167, 231, 0.12), transparent 28rem),
+        radial-gradient(circle at 70% 82%, rgba(156, 207, 216, 0.07), transparent 30rem),
+        linear-gradient(135deg, rgba(25, 23, 36, 0.42), transparent 34rem),
+        var(--base);
       font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
       font-size: 14px;
       color: var(--text);
       overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(115deg, transparent 0 58%, rgba(234, 154, 151, 0.05) 58% 59%, transparent 59%),
+        linear-gradient(115deg, transparent 0 66%, rgba(196, 167, 231, 0.045) 66% 67%, transparent 67%),
+        linear-gradient(rgba(224, 222, 244, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 222, 244, 0.014) 1px, transparent 1px);
+      background-size: auto, auto, 72px 72px, 72px 72px;
+      mask-image: radial-gradient(circle at 62% 38%, black, transparent 72%);
     }
 
     /* scanlines */
@@ -75,7 +95,7 @@
     a { color: var(--foam); text-decoration: none; transition: color 0.15s; }
     a:hover { color: var(--iris); text-decoration: underline; }
 
-    .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; position: relative; z-index: 1; }
 
     /* ── tui box ── */
     .tui-box { margin-bottom: 16px; }
